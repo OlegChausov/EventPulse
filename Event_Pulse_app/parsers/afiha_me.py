@@ -11,7 +11,7 @@ HEADERS = {
 
 # 📅 Даты
 start_date = datetime.today().date()
-end_date = start_date + timedelta(days=180)
+end_date = start_date + timedelta(days=365)
 
 # 🔗 Сформировать URL
 URL = f"https://afisha.me/day/film/{start_date}/{end_date}/"

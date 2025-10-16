@@ -1,9 +1,0 @@
-from datetime import datetime, timedelta
-
-start_date = datetime.today().date()
-end_date = start_date + timedelta(days=180)
-
-base_url = "https://www.eventim.pl/city/warszawa-243/koncerty-62/"
-params = f"?sort=DateAsc&dateFrom={start_date}&dateTo={end_date}"
-url = base_url + params
-print(url)

@@ -12,10 +12,8 @@ HEADERS = {
 
 # 📅 Даты
 start_date = datetime.today().date()
-end_date = start_date + timedelta(days=180)
+end_date = start_date + timedelta(days=365)
 
-start_date = datetime.today().date()
-end_date = start_date + timedelta(days=180)
 start_str = start_date.strftime("%d.%m.%Y")
 end_str = end_date.strftime("%d.%m.%Y")
 
