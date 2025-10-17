@@ -1,43 +1,40 @@
+from fastapi import Depends
+from datetime import datetime, timedelta, date
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
+import re
+import asyncio
 
-awaited_list = ['TheatreHD: Венская опера. Времена года', 'Заклятие 4: Последний обряд', 'Каруза',
-                'Оперный фестиваль в Мачерате: Аида']
+HEADERS = {"User-Agent": "Mozilla/5.0"}
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0"
-}
 
-# 📅 Даты
-start_date = datetime.today().date()
-end_date = start_date + timedelta(days=365)
+def default_start_date() -> date:
+    return datetime.today().date()
 
-# 🔗 Сформировать URL
-URL = f"https://afisha.me/day/film/{start_date}/{end_date}/"
 
-# 📥 Получить HTML
-response = requests.get(URL, headers=HEADERS)
-response.raise_for_status()  # Чтобы не продолжать парсить страницу, если она не загрузилась.
-soup = BeautifulSoup(response.text, "html.parser")
+def default_end_date(start_date: date = Depends(default_start_date)) -> date:
+    return start_date + timedelta(days=365)
 
-# 🎯 Найти только нужные ссылки
-film_links = []
-seen_urls = set()
 
-for a_tag in soup.find_all("a", class_="name"):
-    href = a_tag.get("href", "")
-    if href.startswith("https://afisha.me/film/") and href not in seen_urls:
-        title = a_tag.get_text(strip=True)
-        film_links.append({
-            "title": title,
-            "url": href
-        })
-        seen_urls.add(href)
+async def get_afisha_me_films(
+        start_date: date = Depends(default_start_date),
+        end_date: date = Depends(default_end_date)) -> list[dict]:
 
-# 📤 Вывод
-for film in film_links:
-    if film['title'] in awaited_list:
-        print(film)
 
+    URL = f"https://afisha.me/day/film/{start_date}/{end_date}/"
+    response = requests.get(URL, headers=HEADERS)
+    response.raise_for_status()  # Чтобы не продолжать парсить страницу, если она не загрузилась.
+    soup = BeautifulSoup(response.text, "html.parser")
+    film_links = []
+    seen_urls = set()
+
+    for a_tag in soup.find_all("a", class_="name"):
+        href = a_tag.get("href", "")
+        if href.startswith("https://afisha.me/film/") and href not in seen_urls:
+            title = a_tag.get_text(strip=True)
+            film_links.append({"title": title, "url": href})
+            seen_urls.add(href)
+
+
+    return film_links
 
