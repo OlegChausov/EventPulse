@@ -1,23 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import re
-
 import time
+from fastapi import Depends
 
-awaited_list = ['Монеточка', 'Машина времени', 'Валерий Меладзе']
+HEADERS = {"User-Agent": "Mozilla/5.0"}
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0"
-}
-
-all_events = []
-seen_urls = set()
-
-# 📅 Даты
-start_date = datetime.today().date()
-
+def default_start_date() -> date:
+    return datetime.today().date()
 
 def extract_events(html: str) -> list[dict]:
     soup = BeautifulSoup(html, "html.parser")
@@ -29,10 +20,6 @@ def extract_events(html: str) -> list[dict]:
         events.append({'title': title, 'url': full_url})
     return events
 
-
-url = f"https://concertful.com/area/poland/warsaw?from={start_date}&category=&order=event_date&page=1"
-
-
 def get_total_pages(html: str) -> int:
     soup = BeautifulSoup(html, "html.parser")
     counter = soup.select_one(".buttons_counter span")
@@ -42,23 +29,30 @@ def get_total_pages(html: str) -> int:
             return int(match.group(1))
     return 1
 
+async def get_concertful_pl(start_date: date = Depends(default_start_date)) -> list[dict]:
+    all_events = []
+    seen_urls = set()
 
-response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
-html = response.text
-total_pages = get_total_pages(html)
-
-for page in range(1, total_pages + 1):
-    url = f"https://concertful.com/area/poland/warsaw?from={start_date}&category=&order=event_date&page={page}"
-    response = requests.get(url, headers=HEADERS)
+    # ✅ Получаем первую страницу для определения количества
+    first_url = f"https://concertful.com/area/poland/warsaw?from={start_date}&category=&order=event_date&page=1"
+    response = requests.get(first_url, headers=HEADERS)
     html = response.text
-    events = extract_events(html)
+    total_pages = get_total_pages(html)
 
-    for event in events:
-        if event['url'] not in seen_urls:
-            all_events.append(event)
-            seen_urls.add(event['url'])
+    for page in range(1, total_pages + 1):
+        url = f"https://concertful.com/area/poland/warsaw?from={start_date}&category=&order=event_date&page={page}"
+        response = requests.get(url, headers=HEADERS)
+        html = response.text
+        events = extract_events(html)
 
-    time.sleep(1)
+        for event in events:
+            if event['url'] not in seen_urls:
+                all_events.append(event)
+                seen_urls.add(event['url'])
 
-for event in all_events:
-    print(event)
+        time.sleep(1)  # ⏳ пауза между запросами
+
+
+    return all_events
+
+
