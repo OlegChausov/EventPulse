@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from Event_Pulse_app.database import get_db
 from Event_Pulse_app.models import User
 from Event_Pulse_app.utils.password import hash_password
-
+from sqlalchemy.future import select
 
 router = APIRouter()
 templates = Jinja2Templates(directory="Event_Pulse_app/templates")
@@ -15,19 +15,44 @@ async def show_register_form(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
 @router.post("/register")
-async def register_user(
-    request: Request,
-    email: str = Form(...),
-    name: str = Form(...),
-    password: str = Form(...),
-    db: AsyncSession = Depends(get_db)
-):
+async def register_user(request: Request, db: AsyncSession = Depends(get_db)):
+    form = await request.form()
+    name = form.get("name")
+    email = form.get("email")
+    password = form.get("password")
+    confirm_password = form.get("confirm_password")
+
+
+    if len(password) > 20 or len(password) < 5:
+        return templates.TemplateResponse("register.html", {
+            "request": request,
+            "error": "Пароль должен содержать 5–20 символов"
+        })
+
+    if password != confirm_password:
+        return templates.TemplateResponse("register.html", {
+            "request": request,
+            "error": "Пароли не совпадают"
+        })
+
+    result = await db.execute(
+        select(User).where((User.name == name) | (User.email == email))
+    )
+    if result.scalar_one_or_none():
+        return templates.TemplateResponse("register.html", {
+            "request": request,
+            "error": "Имя пользователя или email заняты"
+        })
+
+    password = password[:72]
+
     user = User(
         email=email,
         name=name,
-        password=password,
         password_hash=hash_password(password)
     )
     db.add(user)
     await db.commit()
-    return RedirectResponse(url="/register", status_code=302)
+    return RedirectResponse(url=f"/profile/{user.id}", status_code=302)
+
+

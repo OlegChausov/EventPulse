@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head><title>Регистрация</title></head>
+<head>
+    <meta charset="utf-8">
+    <title>Регистрация</title>
+</head>
 <body>
-    <h2>Регистрация</h2>
-    <form method="post">
-        <input type="email" name="email" placeholder="Email" required><br>
-        <input type="text" name="name" placeholder="Имя" required><br>
-        <input type="password" name="password" placeholder="Пароль" required><br>
+    <h1>Регистрация</h1>
+
+    {% if error %}
+        <div style="color: red; font-weight: bold;">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form method="post" action="/register">
+
+        <label>Имя пользователя:</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
+
+
+        <label>Пароль:</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <label>Подтверждение пароля:</label><br>
+        <input type="password" name="confirm_password" required><br><br>
+
         <button type="submit">Зарегистрироваться</button>
     </form>
 </body>

@@ -16,7 +16,6 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     email = Column(String, unique=True, nullable=False)
     name = Column(String, nullable=False)
-    password = Column(String, nullable=False)         # исходный пароль (если храним временно)
     password_hash = Column(String, nullable=False)    # хэш пароля
 
     queries = relationship(
