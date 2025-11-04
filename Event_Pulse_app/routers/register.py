@@ -6,6 +6,8 @@ from Event_Pulse_app.database import get_db
 from Event_Pulse_app.models import User
 from Event_Pulse_app.utils.password import hash_password
 from sqlalchemy.future import select
+from Event_Pulse_app.utils.auth_jwt import create_access_token
+
 
 router = APIRouter()
 templates = Jinja2Templates(directory="Event_Pulse_app/templates")
@@ -51,8 +53,20 @@ async def register_user(request: Request, db: AsyncSession = Depends(get_db)):
         name=name,
         password_hash=hash_password(password)
     )
-    db.add(user)
-    await db.commit()
-    return RedirectResponse(url=f"/profile/{user.id}", status_code=302)
+
+    try:
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
+    except Exception:
+        return templates.TemplateResponse("register.html", {
+            "request": request,
+            "error": "Произошла ошибка, повторите попытку"
+        })
+
+    token = create_access_token({"sub": str(user.id)})
+    response = RedirectResponse(url=f"/profile/{user.id}", status_code=302)
+    response.set_cookie(key="access_token", value=token, httponly=True)
+    return response
 
 
