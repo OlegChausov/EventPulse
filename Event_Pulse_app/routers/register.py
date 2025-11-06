@@ -1,3 +1,5 @@
+import os
+
 from fastapi import APIRouter, Request, Form, Depends
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -7,7 +9,10 @@ from Event_Pulse_app.models import User
 from Event_Pulse_app.utils.password import hash_password
 from sqlalchemy.future import select
 from Event_Pulse_app.utils.auth_jwt import create_access_token
+from dotenv import load_dotenv
 
+load_dotenv()
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 router = APIRouter()
 templates = Jinja2Templates(directory="Event_Pulse_app/templates")
@@ -66,7 +71,14 @@ async def register_user(request: Request, db: AsyncSession = Depends(get_db)):
 
     token = create_access_token({"sub": str(user.id)})
     response = RedirectResponse(url=f"/profile/{user.id}", status_code=302)
-    response.set_cookie(key="access_token", value=token, httponly=True)
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        samesite="lax",
+        secure=True
+    )
     return response
 
 

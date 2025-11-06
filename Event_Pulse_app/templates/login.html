@@ -1,0 +1,8 @@
+<!-- templates/login.html -->
+
+{% if not success %} {{ message }} {% endif %}
+<form method="post" action="/login">
+  <input type="text" name="name_or_email" placeholder="Логин или Email">
+  <input type="password" name="password" placeholder="Пароль">
+  <button type="submit">Войти</button>
+</form>
