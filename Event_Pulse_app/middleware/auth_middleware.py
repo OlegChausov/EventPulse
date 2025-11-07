@@ -29,7 +29,7 @@ class JWTMiddleware(BaseHTTPMiddleware):
         # Пробуем декодировать токен
         try:
             payload = decode_access_token(token)
-            request.state.user_id = payload["sub"]
+            request.state.user_id = int(payload["sub"])
         except JWTError:
             # если токен битый и маршрут полупубличный
             if any(path.startswith(p) for p in semi_public_paths):

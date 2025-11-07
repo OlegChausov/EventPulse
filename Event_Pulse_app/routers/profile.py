@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Form, Depends
+from fastapi import APIRouter, Request, Form, Depends, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,9 +13,14 @@ router = APIRouter()
 templates = Jinja2Templates(directory="Event_Pulse_app/templates")
 
 @router.get("/profile")
-async def profile(request: Request):
+async def profile(request: Request, db: AsyncSession = Depends(get_db)):
     user_id = request.state.user_id
+    result = await db.execute(select(User).where(User.id == user_id))
+    user = result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
     return templates.TemplateResponse("profile.html", {
         "request": request,
-        "user_id": user_id
+        "user": user,
     })

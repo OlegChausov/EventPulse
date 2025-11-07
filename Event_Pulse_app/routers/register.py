@@ -70,7 +70,7 @@ async def register_user(request: Request, db: AsyncSession = Depends(get_db)):
         })
 
     token = create_access_token({"sub": str(user.id)})
-    response = RedirectResponse(url=f"/profile/{user.id}", status_code=302)
+    response = RedirectResponse(url="/profile", status_code=302)
     response.set_cookie(
         key="access_token",
         value=token,

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль пользователя</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Добро пожаловать, {{ user.name }}!</h1>
+
+        <div class="profile-info">
+            <p><strong>Имя пользователя:</strong> {{ user.name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+
+        <div class="actions">
+            <a href="/profile_edit" class="btn btn-primary">Изменить мои данные</a>
+        </div>
+    </div>
+</body>
+</html>
