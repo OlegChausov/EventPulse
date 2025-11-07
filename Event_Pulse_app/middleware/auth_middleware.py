@@ -9,8 +9,6 @@ from Event_Pulse_app.config import SEMI_PUBLIC_PATHS, PUBLIC_PATHS
 class JWTMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
 
-
-
         path = request.url.path
         # если путь публичный — пропускаем без проверки
         if any(path.startswith(p) for p in PUBLIC_PATHS):

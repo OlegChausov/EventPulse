@@ -4,6 +4,8 @@ from .profile import router as profile_router
 from .login import router as login_router
 from .logout import router as logout_router
 from .profile import router as profile_router
+from .profile_edit import router as profile_edit_router
+
 
 
 
@@ -15,6 +17,7 @@ profile_router,
 login_router,
 logout_router,
 profile_router,
+profile_edit_router,
 
 
 ]
