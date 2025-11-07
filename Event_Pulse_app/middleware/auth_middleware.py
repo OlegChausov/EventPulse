@@ -3,23 +3,24 @@ from fastapi.responses import RedirectResponse
 from fastapi.requests import Request
 from jose import JWTError
 from Event_Pulse_app.utils.auth_jwt import decode_access_token
+from Event_Pulse_app.config import SEMI_PUBLIC_PATHS, PUBLIC_PATHS
+
 
 class JWTMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        public_paths = ["/login", "/register", "/static", "/favicon.ico"]
-        semi_public_paths = ["/events", "/concerts", "/login"]
+
 
 
         path = request.url.path
         # если путь публичный — пропускаем без проверки
-        if any(path.startswith(p) for p in public_paths):
+        if any(path.startswith(p) for p in PUBLIC_PATHS):
             return await call_next(request)
 
         token = request.cookies.get("access_token")
         # если нет токена
         if not token:
             # если маршрут полупубличный
-            if any(path.startswith(p) for p in semi_public_paths):
+            if any(path.startswith(p) for p in SEMI_PUBLIC_PATHS):
                 # нет токена, но маршрут разрешён → просто идём дальше
                 return await call_next(request)
             else:
@@ -32,7 +33,7 @@ class JWTMiddleware(BaseHTTPMiddleware):
             request.state.user_id = int(payload["sub"])
         except JWTError:
             # если токен битый и маршрут полупубличный
-            if any(path.startswith(p) for p in semi_public_paths):
+            if any(path.startswith(p) for p in SEMI_PUBLIC_PATHS):
                 return await call_next(request)
             return RedirectResponse(url="/login")
 
