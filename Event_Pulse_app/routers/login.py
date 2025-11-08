@@ -26,7 +26,7 @@ templates = Jinja2Templates(directory="Event_Pulse_app/templates")
 async def login_page(request: Request):
     user_id = getattr(request.state, "user_id", None)
     if user_id:
-        return RedirectResponse(url=f"/profile/{user_id}")
+        return RedirectResponse(url=f"/profile")
     return templates.TemplateResponse("login.html", {"request": request})
 
 

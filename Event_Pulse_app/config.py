@@ -1,3 +1,3 @@
-SEMI_PUBLIC_PATHS = ["/events", "/concerts", "/login"]
+SEMI_PUBLIC_PATHS = ["/events", "/concerts", "/login", "/login",]
 
-PUBLIC_PATHS = ["/login", "/register", "/static", "/favicon.ico"]
+PUBLIC_PATHS = [ "/register", "/static", "/favicon.ico"]

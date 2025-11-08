@@ -29,8 +29,7 @@ class JWTMiddleware(BaseHTTPMiddleware):
         try:
             payload = decode_access_token(token)
             request.state.user_id = int(payload["sub"])
-        except JWTError:
-            # если токен битый и маршрут полупубличный
+        except (JWTError, KeyError, TypeError, ValueError) as e:
             if any(path.startswith(p) for p in SEMI_PUBLIC_PATHS):
                 return await call_next(request)
             return RedirectResponse(url="/login")
