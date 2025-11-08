@@ -1,0 +1,14 @@
+{% extends "profile.html" %}
+
+<ul>
+  {% for query in queries %}
+    <li>
+      {{ query.query_text }} — {{ query.query_type }}
+      {% if query.is_active %}
+        <button hx-post="/profile/query/deactivate/{{ query.id }}" hx-target="#query-list" hx-swap="innerHTML">Отключить</button>
+      {% else %}
+        <span>(отключён)</span>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

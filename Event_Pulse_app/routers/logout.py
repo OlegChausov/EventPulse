@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request, Form, Depends
 from fastapi.responses import RedirectResponse
 
+
 router = APIRouter()
 
 @router.get("/logout")

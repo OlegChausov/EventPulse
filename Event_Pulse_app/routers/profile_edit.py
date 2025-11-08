@@ -7,10 +7,10 @@ from Event_Pulse_app.models import User
 from Event_Pulse_app.utils.password import hash_password
 from sqlalchemy.future import select
 from Event_Pulse_app.utils.auth_jwt import create_access_token
-
+from Event_Pulse_app.utils.template_functions import templates
 
 router = APIRouter()
-templates = Jinja2Templates(directory="Event_Pulse_app/templates")
+
 
 @router.get("/profile_edit")
 async def profile_edit(request: Request, db: AsyncSession = Depends(get_db)):

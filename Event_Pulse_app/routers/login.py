@@ -14,13 +14,14 @@ from Event_Pulse_app.utils.password import hash_password, verify_password
 from sqlalchemy.future import select
 from Event_Pulse_app.utils.auth_jwt import create_access_token, decode_access_token
 from dotenv import load_dotenv
+from Event_Pulse_app.utils.template_functions import templates
 
 load_dotenv()
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 
 router = APIRouter()
-templates = Jinja2Templates(directory="Event_Pulse_app/templates")
+
 
 @router.get("/login")
 async def login_page(request: Request):

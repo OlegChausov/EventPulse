@@ -1,0 +1,8 @@
+<form hx-post="/profile/query/add" hx-target="#query-list" hx-swap="innerHTML">
+  <input type="text" name="query_text" placeholder="Запрос" required>
+  <select name="query_type">
+    <option value="concert">Концерт</option>
+    <option value="film">Фильм</option>
+  </select>
+  <button type="submit">Добавить</button>
+</form>
