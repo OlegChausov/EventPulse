@@ -21,7 +21,7 @@ async def profile_edit(request: Request, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
 
     return templates.TemplateResponse(
-        "update_user_form.html",
+        "profile_edit.html",
         {"request": request, "user": user}
     )
 
@@ -55,8 +55,8 @@ async def profile_edit(
     )
     if result.scalar_one_or_none():
         return templates.TemplateResponse(
-            "partials/profile_edit.html",
-            {
+            "profile_edit.html",
+            {   "user": user,
                 "request": request,
                 "message": "Имя или email уже заняты",
                 "success": False
@@ -67,8 +67,8 @@ async def profile_edit(
     if new_password:
         if new_password != new_password_confirmed:
             return templates.TemplateResponse(
-                "partials/profile_edit.html",
-                {
+                "profile_edit.html",
+                {   "user": user,
                     "request": request,
                     "message": "Пароли не совпадают",
                     "success": False
@@ -86,8 +86,8 @@ async def profile_edit(
     await db.refresh(user)
 
     return templates.TemplateResponse(
-        "partials/profile_edit.html",
-        {
+        "profile_edit.html",
+        {   "user": user,
             "request": request,
             "message": "Данные успешно обновлены"
         }
