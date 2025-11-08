@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Профиль пользователя</title>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Мой профиль — Event Pulse{% endblock %}
+{% block content %}
     <div class="container">
         <h1>Добро пожаловать, {{ user.name }}!</h1>
 
@@ -18,5 +14,14 @@
             <a href="/profile_edit" class="btn btn-primary">Изменить мои данные</a>
         </div>
     </div>
-</body>
-</html>
+
+<div class="left-panel">
+  <h3>Мои запросы</h3>
+
+  <div id="query-list" hx-get="/profile/query/list" hx-trigger="load" hx-swap="innerHTML"></div>
+
+  <button hx-get="/profile/query/form" hx-target="#query-form" hx-swap="innerHTML">Добавить запрос</button>
+  <div id="query-form"></div>
+</div>
+
+{% endblock %}

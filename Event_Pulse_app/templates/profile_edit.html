@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Изменение данных пользователя</title>
-</head>
-<body>
+{% extends "base.html" %}
 
+{% block title %}Мой профиль — Event Pulse{% endblock %}
+{% block content %}
 
     {% if error %}
         <div style="color: red; font-weight: bold;">
@@ -35,3 +31,4 @@
   <button type="submit">Сохранить</button>
 </form>
 
+{% endblock %}
