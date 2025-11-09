@@ -11,7 +11,7 @@ from sqlalchemy.future import select
 from Event_Pulse_app.utils.auth_jwt import create_access_token
 from dotenv import load_dotenv
 from Event_Pulse_app.utils.template_functions import templates
-
+from Event_Pulse_app.utils.QueryNormalizer import QueryNormalizer
 
 
 router = APIRouter()
@@ -47,7 +47,7 @@ async def add_query(
     query = EventQuery(
         user_id=user_id,
         query_text=query_text,
-        preprocessed_name=query_text.lower(),
+        preprocessed_name=QueryNormalizer.preprocess(query_text, query_type),
         query_type=query_type,
         is_active=True
     )

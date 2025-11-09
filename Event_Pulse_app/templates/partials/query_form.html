@@ -1,4 +1,9 @@
-<form hx-post="/profile/query/add" hx-target="#query-list" hx-swap="innerHTML">
+<form
+  hx-post="/profile/query/add"
+  hx-target="#query-list"
+  hx-swap="innerHTML"
+  hx-on="htmx:afterRequest: document.getElementById('query-form').innerHTML = ''"
+>
   <input type="text" name="query_text" placeholder="Запрос" required>
   <select name="query_type">
     <option value="concert">Концерт</option>
