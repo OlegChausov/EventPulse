@@ -17,7 +17,7 @@ def extract_events(html: str) -> list[dict]:
         title = a_tag.text.strip()
         relative_url = a_tag.get("href")
         full_url = f"https://concertful.com{relative_url}"
-        events.append({'title': title, 'url': full_url})
+        events.append({"event_type": "concert", "location": "Warsaw", 'title': title, 'url': full_url})
     return events
 
 def get_total_pages(html: str) -> int:

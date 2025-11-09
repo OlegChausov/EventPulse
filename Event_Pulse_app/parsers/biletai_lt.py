@@ -51,7 +51,7 @@ async def get_biletai_lt_concerts(
             url = a_tag.get("href", "")
 
             if title and url and url not in seen_concerts:
-                concerts.append({'title': title, 'url': url})
+                concerts.append({"event_type": "concert", "location": "Vilnius", 'title': title, 'url': url})
                 seen_concerts.add(url)
 
     return concerts

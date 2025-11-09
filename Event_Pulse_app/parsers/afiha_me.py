@@ -32,7 +32,7 @@ async def get_afisha_me_films(
         href = a_tag.get("href", "")
         if href.startswith("https://afisha.me/film/") and href not in seen_urls:
             title = a_tag.get_text(strip=True)
-            film_links.append({"title": title, "url": href})
+            film_links.append({"event_type": "film", "title": title, "url": href})
             seen_urls.add(href)
 
 
