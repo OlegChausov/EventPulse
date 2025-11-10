@@ -1,33 +1,28 @@
-from Event_Pulse_app.config import PARSERS
 import asyncio
-import itertools
+from datetime import date
+from Event_Pulse_app.parsers.afisha_me import get_afisha_me_films, default_start_date, default_end_date
+from Event_Pulse_app.parsers.biletai_lt import get_biletai_lt_concerts
+from Event_Pulse_app.parsers.concertful import get_concertful_pl
 
-# PARSERS = [
-#     {"name": "afisha_me", "func": get_afisha_me_films, "type": "film", "region": "BY"},
-#     {"name": "biletail_lt", "func": get_biletai_lt_concerts, "type": "concert", "region": "LT"},
-#     {"name": "concertful", "func": get_concertful_pl, "type": "concert", "region": "PL"},
-# ]
+async def run_all_parsers() -> list[dict]:
+    # Используем централизованные функции для дат
+    start_date: date = default_start_date()
+    end_date: date = default_end_date(start_date)
 
-async def global_parsing() -> list[dict]:
-    results = await asyncio.gather(*(parser["func"]() for parser in PARSERS))
-    return list(itertools.chain.from_iterable(results))
+    # Переопределяем парсеры с фиксированными параметрами
+    afisha = get_afisha_me_films(start_date=start_date, end_date=end_date)
+    biletai = get_biletai_lt_concerts(start_date=start_date, end_date=end_date)
+    concertful = get_concertful_pl(start_date=start_date)
 
+    # Запускаем все асинхронно
+    results = await asyncio.gather(afisha, biletai, concertful, return_exceptions=True)
 
+    # Объединяем и фильтруем ошибки
+    all_events = []
+    for res in results:
+        if isinstance(res, Exception):
+            # Можно логировать ошибку
+            continue
+        all_events.extend(res)
 
-
-
-
-
-# matched_events = []
-#
-# existing_urls = {event.url for event in await db.execute(select(Event.url))}
-#
-# for raw_event in raw_events:
-#     for query in event_queries:
-#         if fuzzy_match(query, raw_event):
-#             if raw_event["url"] not in existing_urls:
-#                 matched_events.append((query, raw_event))
-#                 existing_urls.add(raw_event["url"])  # чтобы не добавлять повторно
-#             break  # достаточно одного совпадения
-
-
+    return all_events

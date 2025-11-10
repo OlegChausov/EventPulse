@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from Event_Pulse_app.parsers.afisha_me import get_afisha_me_films
 from Event_Pulse_app.parsers.biletai_lt import get_biletai_lt_concerts
 from Event_Pulse_app.parsers.concertful import get_concertful_pl
-from Event_Pulse_app.utils.parse_all import global_parsing
+from Event_Pulse_app.utils.parse_all import run_all_parsers
 
 router = APIRouter()
 
@@ -22,6 +22,6 @@ router = APIRouter()
 
 
 @router.get("/test-parse-all")
-async def test_afisha(events=Depends(global_parsing)):
-    await events
+async def test_all(events=Depends(run_all_parsers)):
+
     return events
