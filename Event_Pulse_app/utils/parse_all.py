@@ -1,5 +1,6 @@
 from Event_Pulse_app.config import PARSERS
 import asyncio
+import itertools
 
 # PARSERS = [
 #     {"name": "afisha_me", "func": get_afisha_me_films, "type": "film", "region": "BY"},
@@ -8,9 +9,8 @@ import asyncio
 # ]
 
 async def global_parsing() -> list[dict]:
-    results = await asyncio.gather(*[parser["func"]() for parser in PARSERS])
-    all_events = [event for sublist in results for event in sublist]
-    return all_events
+    results = await asyncio.gather(*(parser["func"]() for parser in PARSERS))
+    return list(itertools.chain.from_iterable(results))
 
 
 
@@ -29,3 +29,5 @@ async def global_parsing() -> list[dict]:
 #                 matched_events.append((query, raw_event))
 #                 existing_urls.add(raw_event["url"])  # чтобы не добавлять повторно
 #             break  # достаточно одного совпадения
+
+

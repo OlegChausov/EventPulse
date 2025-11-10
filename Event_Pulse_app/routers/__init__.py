@@ -9,6 +9,7 @@ from .profile_query_router import router as get_query_list_router
 from .profile_query_router import router1 as query_form_router
 from .profile_query_router import router2 as add_query_router
 from .profile_query_router import router3 as deactivate_query_router
+from .test_of_parsers import router as test_of_parsers_router
 
 
 
@@ -25,6 +26,7 @@ get_query_list_router,
 query_form_router,
 add_query_router,
 deactivate_query_router,
+test_of_parsers_router,
 
 
 

@@ -4,12 +4,13 @@ from fastapi.requests import Request
 from jose import JWTError
 from Event_Pulse_app.utils.auth_jwt import decode_access_token
 from Event_Pulse_app.config import SEMI_PUBLIC_PATHS, PUBLIC_PATHS
-
+import logging
 
 class JWTMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
 
         path = request.url.path
+        logging.warning(f"🔍 JWTMiddleware: incoming path = {request.url.path}")
         # если путь публичный — пропускаем без проверки
         if any(path.startswith(p) for p in PUBLIC_PATHS):
             return await call_next(request)

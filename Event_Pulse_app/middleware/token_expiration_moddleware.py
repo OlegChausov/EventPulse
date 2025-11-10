@@ -42,8 +42,10 @@ class SlidingExpirationMiddleware(BaseHTTPMiddleware):
                 )
                 return response
 
-        except (KeyError, JWTError, ValueError):
-            return RedirectResponse(url="/login")
+
+        except (JWTError, KeyError, ValueError):
+            # токен битый — не продлеваем, просто пропускаем
+            return await call_next(request)
 
         return await call_next(request)
 

@@ -22,4 +22,4 @@ import pkgutil
 #
 #     return films
 
-all_parsers = [get_afisha_me_films, get_biletai_lt_concerts, get_concertful_pl]
+
