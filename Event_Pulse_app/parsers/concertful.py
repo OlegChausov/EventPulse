@@ -3,12 +3,10 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, date
 import re
 import time
-from fastapi import Depends
+
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
-def default_start_date() -> date:
-    return datetime.today().date()
 
 def extract_events(html: str) -> list[dict]:
     soup = BeautifulSoup(html, "html.parser")
@@ -29,7 +27,7 @@ def get_total_pages(html: str) -> int:
             return int(match.group(1))
     return 1
 
-async def get_concertful_pl(start_date: date = Depends(default_start_date)) -> list[dict]:
+async def get_concertful_pl(start_date: date) -> list[dict]:
     all_events = []
     seen_urls = set()
 

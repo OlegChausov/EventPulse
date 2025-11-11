@@ -4,21 +4,15 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import asyncio
+from Event_Pulse_app.utils.time_functions import default_start_date, default_end_date
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
 
-def default_start_date() -> date:
-    return datetime.today().date()
-
-
-def default_end_date(start_date: date = Depends(default_start_date)) -> date:
-    return start_date + timedelta(days=365)
-
 
 async def get_afisha_me_films(
-        start_date: date = Depends(default_start_date),
-        end_date: date = Depends(default_end_date)) -> list[dict]:
+        start_date: date ,
+        end_date: date) -> list[dict]:
 
 
     URL = f"https://afisha.me/day/film/{start_date}/{end_date}/"

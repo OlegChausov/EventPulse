@@ -7,16 +7,11 @@ import asyncio
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
-def default_start_date() -> date:
-    return datetime.today().date()
-
-def default_end_date(start_date: date = Depends(default_start_date)) -> date:
-    return start_date + timedelta(days=365)
 
 async def get_biletai_lt_concerts(
-    start_date: date = Depends(default_start_date),
-    end_date: date = Depends(default_end_date)
-) -> list[dict]:
+    start_date: date,
+    end_date: date) -> list[dict]:
+
     start_str = start_date.strftime("%d.%m.%Y")
     end_str = end_date.strftime("%d.%m.%Y")
 
