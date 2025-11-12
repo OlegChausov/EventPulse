@@ -36,6 +36,7 @@ async def parser_loop():
     while True:
         try:
             app.state.parsed_events = await run_all_parsers()
+            # print(app.state.parsed_events)
             await asyncio.sleep(PARSER_REFRESH_INTERVAL_SECONDS)
         except Exception as e:
             print(f"❌ Ошибка: {type(e).__name__}: {e}")
