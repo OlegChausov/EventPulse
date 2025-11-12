@@ -10,7 +10,7 @@ from .profile_query_router import router1 as query_form_router
 from .profile_query_router import router2 as add_query_router
 from .profile_query_router import router3 as deactivate_query_router
 from .test_of_parsers import router as test_of_parsers_router
-
+from .test_creating_events import router as test_creating_events_router
 
 
 
@@ -27,6 +27,7 @@ query_form_router,
 add_query_router,
 deactivate_query_router,
 test_of_parsers_router,
+test_creating_events_router,
 
 
 
