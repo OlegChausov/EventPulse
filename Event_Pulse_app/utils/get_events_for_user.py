@@ -20,7 +20,7 @@ async def create_events(user: User, parsed_events: list[dict], db: AsyncSession)
     stmt = await db.execute(select(EventQuery).where(EventQuery.user_id == user.id))
     user_event_queries = stmt.scalars().all()
 
-    raw_events = parsed_events
+    raw_events = parsed_events[:]
 
     if not raw_events:
         raise HTTPException(status_code=400, detail="Нет распарсенных событий")
@@ -43,6 +43,7 @@ async def create_events(user: User, parsed_events: list[dict], db: AsyncSession)
                 )
                 try:
                     db.add(new_event)
+                    raw_events.remove(raw_event)
                     list_of_new_events.append(new_event)
                 except Exception as e:
                     print(f"{raw_event} не обработалось: {e}")
