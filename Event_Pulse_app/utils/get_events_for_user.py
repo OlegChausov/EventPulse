@@ -9,10 +9,9 @@ from Event_Pulse_app.utils.password import hash_password
 from sqlalchemy.future import select
 from Event_Pulse_app.utils.QueryNormalizer import QueryNormalizer
 from Event_Pulse_app.utils.template_functions import templates
+from Event_Pulse_app.utils.send_an_email import send_email
+from fastapi import FastAPI, BackgroundTasks
 
-
-async def send_an_email(user: User, new_events = list):
-    pass
 
 async def create_events(user: User, parsed_events: list[dict], db: AsyncSession):
 
@@ -49,12 +48,14 @@ async def create_events(user: User, parsed_events: list[dict], db: AsyncSession)
                     print(f"{raw_event} не обработалось: {e}")
 
 
-
-
     await db.commit()
     print("НОВЫЕ СОБЫТИЯ")
     print(list_of_new_events) #для проверки
-    await send_an_email(user, list_of_new_events)
+    if list_of_new_events:
+        mail_body = "\n".join(
+            " | ".join(filter(None, [event.title, event.location, event.url]))
+            for event in list_of_new_events)
+        await send_email(user.email, "Event_Pulse нашел новые события для вас!", mail_body)
     return list_of_new_events
 
 
