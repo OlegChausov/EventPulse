@@ -8,6 +8,7 @@ from Event_Pulse_app.database import get_db
 from Event_Pulse_app.models import User, EventQuery
 from Event_Pulse_app.utils.password import hash_password
 from sqlalchemy.future import select
+from sqlalchemy import delete
 from Event_Pulse_app.utils.auth_jwt import create_access_token
 from dotenv import load_dotenv
 from Event_Pulse_app.utils.template_functions import templates
@@ -44,6 +45,14 @@ async def add_query(
     query_type: str = Form(...)
 ):
     user_id = request.state.user_id
+
+    await db.execute(
+        delete(EventQuery).where(
+            EventQuery.user_id == user_id,
+            EventQuery.query_text == query_text
+        )
+    )
+
     query = EventQuery(
         user_id=user_id,
         query_text=query_text,

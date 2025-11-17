@@ -12,8 +12,9 @@
     {% if event.is_active %}
     <tr>
       <td>{{ event.title }}</td>
-      <td>{{ event.location | default("Кино в Минске", true) }}</td>
-      <td></td>
+      <td>{{ "Кино в Минске" if event.location is none else "Вильнюс" if event.location|lower == "vilnius" else "Варшава" if event.location|lower == "warshaw" else event.location }}</td>
+
+
      <td>
   <a href="{{ event.url }}"
      class="btn btn-outline-success"
@@ -23,8 +24,12 @@
   </a>
 </td>
       <td>
-        <button hx-post="/profile/event/deactivate/{{ event.id }}"
-                hx-target="#query-list" hx-swap="innerHTML" class="btn btn-outline-danger">Не искать</button>
+        <button hx-get="/profile/event/deactivate_related_query/{{ event.id }}"
+        hx-target="#query-list"
+        hx-swap="innerHTML"
+        class="btn btn-outline-danger">
+  Больше не искать
+</button>
 
       </td>
       {% endif %}

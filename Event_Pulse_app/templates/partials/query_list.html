@@ -15,7 +15,7 @@
     {% if query.is_active %}
     <tr>
       <td>{{ query.query_text }}</td>
-      <td>{{ query.query_type }}</td>
+<td>{{ "Фильм" if query.query_type|lower == "film" else "Концерт" if query.query_type|lower == "concert" else query.query_type }}</td>
       <td>
         <button hx-post="/profile/query/deactivate/{{ query.id }}"
                 hx-target="#query-list" hx-swap="innerHTML" class="btn btn-outline-danger">Не искать</button>
