@@ -15,13 +15,23 @@
         </div>
     </div>
 
-<div class="left-panel">
+<div class="float-start" style="width:50%">
   <h3>Мои запросы</h3>
 
   <div id="query-list" hx-get="/profile/query/list" hx-trigger="load" hx-swap="innerHTML"></div>
 
   <button hx-get="/profile/query/form" hx-target="#query-form" hx-swap="innerHTML">Добавить запрос</button>
   <div id="query-form"></div>
+</div>
+
+
+
+<div class="float-end" style="width:50%">
+  <h3>Мои события</h3>
+
+  <div id="event-list" hx-get="/profile/events/list" hx-trigger="load" hx-swap="innerHTML"></div>
+
+
 </div>
 
 {% endblock %}

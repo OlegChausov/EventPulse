@@ -11,7 +11,7 @@ from .profile_query_router import router2 as add_query_router
 from .profile_query_router import router3 as deactivate_query_router
 from .test_of_parsers import router as test_of_parsers_router
 from .test_creating_events import router as test_creating_events_router
-
+from .profile_event_router import router as profile_event_router
 
 
 all_routers = [
@@ -28,6 +28,7 @@ add_query_router,
 deactivate_query_router,
 test_of_parsers_router,
 test_creating_events_router,
+profile_event_router,
 
 
 

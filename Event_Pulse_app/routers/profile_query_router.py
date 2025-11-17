@@ -25,11 +25,11 @@ async def query_list(request: Request, db: AsyncSession = Depends(get_db)):
     user_id = request.state.user_id
 
     if user_id is None:
-        return templates.TemplateResponse("partials/quaries_error.html", {"request": request, "message": "Запросы не найдены"} )
+        return templates.TemplateResponse("partials/quaries_error.html", {"request": request, "message": "Пользователь не найден"} )
 
     result = await db.execute(select(EventQuery).where(EventQuery.user_id == user_id))
     queries = result.scalars().all()
-    return templates.TemplateResponse("partials/query_list.html", {"request": request, "queries": queries, "success" : False})
+    return templates.TemplateResponse("partials/query_list.html", {"request": request, "queries": queries, "success" : True})
 
 
 @router1.get("/profile/query/form")
