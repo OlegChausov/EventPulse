@@ -1,15 +1,34 @@
 
 
-<ul>
+
+
+
+
+
+
+
+
+<table class="table table-striped table-bordered">
+  <tbody>
   {% for query in queries %}
-    <li>
-      {{ query.query_text }} — {{ query.query_type }}
-      {% if query.is_active %}
+
+    {% if query.is_active %}
+    <tr>
+      <td>{{ query.query_text }}</td>
+      <td>{{ query.query_type }}</td>
+      <td>
         <button hx-post="/profile/query/deactivate/{{ query.id }}"
-                hx-target="#query-list" hx-swap="innerHTML">Отключить</button>
-      {% else %}
-        <span>(отключён)</span>
+                hx-target="#query-list" hx-swap="innerHTML" class="btn btn-outline-danger">Не искать</button>
+
+      </td>
       {% endif %}
-    </li>
-  {% endfor %}
-</ul>
+
+
+
+
+
+
+{% endfor %}
+  </tbody>
+</table>
+
