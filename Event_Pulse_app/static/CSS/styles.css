@@ -8,7 +8,7 @@
       flex: 1 0 auto; /* растягивает контент и прижимает футер вниз */
     }
     .container {
-      width: 90% !important;
+      width: 95% !important;
       max-width: 100% !important;
       padding-left: 1rem;
       padding-right: 1rem;
