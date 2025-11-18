@@ -14,6 +14,7 @@ from .test_creating_events import router as test_creating_events_router
 from .profile_event_router import router as profile_event_router
 from .profile_event_router import router1 as profile_event_router_to_dectivate_query
 from .profile_event_router import router2 as profile_event_dectivate_router
+from .profile_event_router import router3 as profile_event_bulk_action_router
 
 
 all_routers = [
@@ -33,6 +34,7 @@ test_creating_events_router,
 profile_event_router,
 profile_event_router_to_dectivate_query,
 profile_event_dectivate_router,
+profile_event_bulk_action_router,
 
 
 

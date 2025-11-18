@@ -4,8 +4,29 @@
 
 
 
-
+<form hx-post="/profile/event/event_bulk"
+      hx-target="#event-list"
+      hx-swap="innerHTML">
 <table class="highlight bordered">
+
+
+
+   <thead>
+      <tr>
+        <th>
+
+        </th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>     <!-- общий чекбокс -->
+          <label>
+            <input type="checkbox" id="select-all" />
+            <span></span>
+          </label></th>
+      </tr>
+    </thead>
 
   <tbody>
   {% for event in events %}
@@ -43,7 +64,27 @@
   Скрыть и искать дальше
 </button>
       </td>
+        <td>
+          <label>
+            <input type="checkbox" name="ids" value="{{ event.id }}" class="row-check" />
+            <span></span>
+          </label>
+        </td>
       {% endif %}
 
 
     {% endfor %}
+
+
+ </tbody>
+    </table>
+      <button type="submit" name="action" value="hide"
+          class="waves-effect waves-light btn grey">
+    Скрыть отмеченные и искать дальше
+  </button>
+
+  <button type="submit" name="action" value="deactivate_related_query"
+          class="waves-effect waves-light btn green darken-3">
+    Больше не искать отмеченные
+  </button>
+</form>
