@@ -11,27 +11,27 @@
         </div>
 
         <div class="actions">
-            <a href="/profile_edit" class="btn btn-outline-primary">Изменить мои данные</a>
+            <a href="/profile_edit" class="waves-effect waves-light btn blue">Изменить мои данные</a>
         </div>
     </div>
 
-<div class="float-start" style="width:35%">
-  <h3>Мои запросы</h3>
+    <div class="left" style="width:26%">
+      <h3>Мои запросы</h3>
 
-  <div id="query-list" hx-get="/profile/query/list" hx-trigger="load" hx-swap="innerHTML"></div>
+      <div id="query-list" hx-get="/profile/query/list" hx-trigger="load" hx-swap="innerHTML"></div>
 
-  <button hx-get="/profile/query/form" hx-target="#query-form" hx-swap="innerHTML" class="btn btn-outline-success">Добавить запрос</button>
-  <div id="query-form"></div>
-</div>
+      <button hx-get="/profile/query/form"
+              hx-target="#query-form"
+              hx-swap="innerHTML"
+              class="waves-effect waves-light btn green">
+        Добавить запрос
+      </button>
+      <div id="query-form"></div>
+    </div>
 
+    <div class="right" style="width:70%">
+      <h3>Мои события</h3>
 
-
-<div class="float-end" style="width:62%">
-  <h3>Мои события</h3>
-
-  <div id="event-list" hx-get="/profile/events/list" hx-trigger="load" hx-swap="innerHTML"></div>
-
-
-</div>
-
+      <div id="event-list" hx-get="/profile/events/list" hx-trigger="load" hx-swap="innerHTML"></div>
+    </div>
 {% endblock %}

@@ -4,27 +4,37 @@
   <meta charset="UTF-8">
   <title>{% block title %}Event Pulse{% endblock %}</title>
   <script src="https://unpkg.com/htmx.org@1.9.2"></script>
-<link rel="stylesheet" href="{{ url_for('static', path='css/bootstrap.min.css') }}">
+  <!-- Materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+ <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body class="d-flex flex-column min-vh-100">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">Event Pulse</a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item"><a class="nav-link" href="/profile">Профиль</a></li>
-          <li class="nav-item"><a class="nav-link" href="/logout">Выход</a></li>
-        </ul>
-      </div>
+<body>
+
+  <!-- Навбар -->
+  <nav>
+    <div class="nav-wrapper light-blue lighten-2">
+      <a href="/" class="brand-logo">Event Pulse</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="/profile">Профиль</a></li>
+        <li><a href="/logout">Выход</a></li>
+      </ul>
     </div>
   </nav>
 
-  <main class="container mt-4 flex-grow-1">
+  <!-- Контент -->
+  <main class="container section">
     {% block content %}{% endblock %}
   </main>
 
-<footer class="text-center text-muted mt-auto py-3 bg-light">
-  &copy; 2025 Event Pulse
-</footer>
+  <!-- Футер -->
+  <footer class="page-footer light-blue lighten-5">
+    <div class="container center-align grey-text text-darken-1">
+      &copy; 2025 Event Pulse
+    </div>
+  </footer>
+
+  <!-- Materialize JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>

@@ -8,7 +8,8 @@
 
 
 
-<table class="table table-striped table-bordered">
+<table class="highlight bordered">
+
   <tbody>
   {% for query in queries %}
 
@@ -18,7 +19,7 @@
 <td>{{ "Фильм" if query.query_type|lower == "film" else "Концерт" if query.query_type|lower == "concert" else query.query_type }}</td>
       <td>
         <button hx-post="/profile/query/deactivate/{{ query.id }}"
-                hx-target="#query-list" hx-swap="innerHTML" class="btn btn-outline-danger btn-sm">Не искать</button>
+                hx-target="#query-list" hx-swap="innerHTML" class="waves-effect waves-light btn-small red">Не искать</button>
 
       </td>
       {% endif %}

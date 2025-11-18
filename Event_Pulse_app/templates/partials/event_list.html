@@ -5,7 +5,8 @@
 
 
 
-<table class="table table-striped table-bordered">
+<table class="highlight bordered">
+
   <tbody>
   {% for event in events %}
 
@@ -17,9 +18,10 @@
 
      <td>
   <a href="{{ event.url }}"
-     class="btn btn-outline-success btn-sm"
+     class="waves-effect waves-light btn-small blue"
      target="_blank"
      rel="noopener noreferrer">
+      <i class="material-icons left">cloud</i>
     Купить билет
   </a>
 </td>
@@ -28,7 +30,7 @@
         <button hx-get="/profile/event/deactivate_related_query/{{ event.id }}"
         hx-target="#query-list"
         hx-swap="innerHTML"
-        class="btn btn-outline-danger btn-sm">
+        class="waves-effect waves-light btn-small green darken-3">
   Больше не искать
 </button>
       </td>
@@ -37,7 +39,7 @@
         <button hx-get="/profile/event/deactivate_event/{{ event.id }}"
         hx-target="#event-list"
         hx-swap="innerHTML"
-        class="btn btn-outline-dark btn-sm">
+        class="waves-effect waves-light btn-small grey">
   Скрыть и искать дальше
 </button>
       </td>
