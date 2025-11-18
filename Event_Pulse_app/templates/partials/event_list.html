@@ -17,20 +17,29 @@
 
      <td>
   <a href="{{ event.url }}"
-     class="btn btn-outline-success"
+     class="btn btn-outline-success btn-sm"
      target="_blank"
      rel="noopener noreferrer">
     Купить билет
   </a>
 </td>
+
       <td>
         <button hx-get="/profile/event/deactivate_related_query/{{ event.id }}"
         hx-target="#query-list"
         hx-swap="innerHTML"
-        class="btn btn-outline-danger">
+        class="btn btn-outline-danger btn-sm">
   Больше не искать
 </button>
+      </td>
 
+       <td>
+        <button hx-get="/profile/event/deactivate_event/{{ event.id }}"
+        hx-target="#event-list"
+        hx-swap="innerHTML"
+        class="btn btn-outline-dark btn-sm">
+  Скрыть и искать дальше
+</button>
       </td>
       {% endif %}
 
