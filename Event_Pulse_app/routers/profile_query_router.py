@@ -1,9 +1,11 @@
 import os
-
+from fastapi.responses import Response
 from fastapi import APIRouter, Request, Form, Depends
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import QueryEvents
+from fastapi.responses import RedirectResponse
 from Event_Pulse_app.database import get_db
 from Event_Pulse_app.models import User, EventQuery
 from Event_Pulse_app.utils.password import hash_password
@@ -13,12 +15,13 @@ from Event_Pulse_app.utils.auth_jwt import create_access_token
 from dotenv import load_dotenv
 from Event_Pulse_app.utils.template_functions import templates
 from Event_Pulse_app.utils.QueryNormalizer import QueryNormalizer
-
+from typing import List, Optional
 
 router = APIRouter()
 router1 = APIRouter()
 router2 = APIRouter()
 router3 = APIRouter()
+router4 = APIRouter()
 
 
 @router.get("/profile/query/list")
@@ -79,3 +82,34 @@ async def deactivate_query(query_id: int, request: Request, db: AsyncSession = D
     result = await db.execute(select(EventQuery).where(EventQuery.user_id == user_id))
     queries = result.scalars().all()
     return templates.TemplateResponse("partials/query_list.html", {"request": request, "queries": queries})
+
+
+@router.post("/profile/query/query_bulk")
+async def query_bulk(
+    selected_queries: Optional[List[int]] = Form(None),
+    db: AsyncSession = Depends(get_db)
+):
+    success_count = 0
+    fail_count = 0
+
+    if not selected_queries:
+        # ничего не делаем, просто возвращаем пустой ответ
+        return Response(status_code=204)
+
+    for query_id in selected_queries:
+        obj = await db.get(EventQuery, query_id)
+        if not obj:
+            print(f"запрос с id {query_id} не найдено для действия deactivate_query")
+            fail_count += 1
+            continue
+        try:
+            obj.is_active = False
+            success_count += 1
+            db.add(obj)
+
+        except Exception as e:
+            print(f"Ошибка при деактивации EventQuery: {obj.id} {e}")
+
+    await db.commit()
+
+    return RedirectResponse(url="/profile", status_code=303)

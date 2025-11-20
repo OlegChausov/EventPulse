@@ -7,9 +7,23 @@
 
 
 
-
+<form id="querylist-form" action="/profile/query/query_bulk" method="post">
 <table class="highlight bordered">
+   <thead>
+      <tr>
+        <th>
 
+        </th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>     <!-- общий чекбокс -->
+          <label>
+            <input type="checkbox" id="select-all-queries" />
+            <span></span>
+          </label></th>
+      </tr>
+    </thead>
   <tbody>
   {% for query in queries %}
 
@@ -22,6 +36,14 @@
                 hx-target="#query-list" hx-swap="innerHTML" class="waves-effect waves-light btn-small red">Не искать</button>
 
       </td>
+        <td>
+                    <td>
+          <label>
+            <input type="checkbox" name="selected_queries" value="{{ query.id }}" class="row-check" />
+            <span></span>
+          </label>
+        </td>
+        </td>
       {% endif %}
 
 
@@ -32,4 +54,27 @@
 {% endfor %}
   </tbody>
 </table>
+  <button type="submit" name="action" value="deactivate_related_query"
+          class="waves-effect waves-light btn red darken-3">
+    Не искать отмеченные
+  </button>
+</form>
+<br>
 
+
+
+<script>
+(function() {
+  const form = document.getElementById('querylist-form');
+  const selectAll = form.querySelector('#select-all-queries');
+  const getRowChecks = () => Array.from(form.querySelectorAll('.row-check'));
+  selectAll.addEventListener('change', () => {
+    getRowChecks().forEach(cb => cb.checked = selectAll.checked);
+  });
+  form.addEventListener('change', (e) => {
+    if (!e.target.classList.contains('row-check')) return;
+    const checks = getRowChecks();
+    selectAll.checked = checks.length && checks.every(c => c.checked);
+  });
+})();
+</script>

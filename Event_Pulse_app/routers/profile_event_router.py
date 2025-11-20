@@ -1,5 +1,5 @@
 import os
-
+from fastapi.responses import Response
 from fastapi import APIRouter, Request, Form, Depends, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -12,7 +12,7 @@ from Event_Pulse_app.utils.auth_jwt import create_access_token
 from dotenv import load_dotenv
 from Event_Pulse_app.utils.template_functions import templates
 from Event_Pulse_app.utils.QueryNormalizer import QueryNormalizer
-from typing import List
+from typing import List, Optional
 from fastapi.responses import RedirectResponse
 
 
@@ -79,11 +79,15 @@ async def deactivate_event(event_id: int, request: Request, db: AsyncSession = D
 @router.post("/profile/event/event_bulk")
 async def event_bulk(
     request: Request,
-    selected_ids: List[int] = Form(...),
+    selected_ids: Optional[List[int]] = Form(None),
     action: str = Form(...),
     db: AsyncSession = Depends(get_db)
 ):
     user_id = request.state.user_id
+
+    if not selected_ids:
+        # ничего не делаем, просто возвращаем пустой ответ
+        return Response(status_code=204)
 
     if action == "hide":
         success_count = 0
@@ -102,16 +106,6 @@ async def event_bulk(
                 print(f"Ошибка при деактивации : {obj.id} {e}")
 
         await db.commit()
-
-
-        # result = await db.execute(select(Event).where(Event.user_id == user_id))
-        # updated_events = result.scalars().all()
-        #
-        # return templates.TemplateResponse(
-        #     "partials/event_list.html",
-        #     {"request": request, "events": updated_events, "message": f"Hide: {success_count}/{fail_count}"}
-        # )
-
         return RedirectResponse(url="/profile", status_code=303)
 
 
@@ -142,12 +136,6 @@ async def event_bulk(
 
 
         await db.commit()
-        # result = await db.execute(select(EventQuery).where(EventQuery.user_id == user_id))
-        # new_queries = result.scalars().all()
-        #
-        # return templates.TemplateResponse(
-        # "partials/query_list.html",
-        # {"request": request, "queries": new_queries, "message": f"Deactivate_related_quaries: {success_count}/{fail_count}"})
 
         return RedirectResponse(url="/profile", status_code=303)
 

@@ -9,6 +9,7 @@ from .profile_query_router import router as get_query_list_router
 from .profile_query_router import router1 as query_form_router
 from .profile_query_router import router2 as add_query_router
 from .profile_query_router import router3 as deactivate_query_router
+from .profile_query_router import router4 as query_bulk_action_router
 from .test_of_parsers import router as test_of_parsers_router
 from .test_creating_events import router as test_creating_events_router
 from .profile_event_router import router as profile_event_router
@@ -35,6 +36,7 @@ profile_event_router,
 profile_event_router_to_dectivate_query,
 profile_event_dectivate_router,
 profile_event_bulk_action_router,
+query_bulk_action_router,
 
 
 

@@ -4,7 +4,8 @@
 
 
 
-<form action="/profile/event/event_bulk" method="post">
+<form id="events-form" action="/profile/event/event_bulk" method="post">
+
 <table class="highlight bordered">
 
 
@@ -86,5 +87,23 @@
     Больше не искать отмеченные
   </button>
 </form>
+
+
+<script>
+(function() {
+  const form = document.getElementById('events-form');
+  const selectAll = form.querySelector('#select-all');
+  const getRowChecks = () => Array.from(form.querySelectorAll('.row-check'));
+  selectAll.addEventListener('change', () => {
+    getRowChecks().forEach(cb => cb.checked = selectAll.checked);
+  });
+  form.addEventListener('change', (e) => {
+    if (!e.target.classList.contains('row-check')) return;
+    const checks = getRowChecks();
+    selectAll.checked = checks.length && checks.every(c => c.checked);
+  });
+})();
+</script>
+
 
 
