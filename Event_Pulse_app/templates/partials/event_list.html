@@ -4,9 +4,7 @@
 
 
 
-<form hx-post="/profile/event/event_bulk"
-      hx-target="#event-list"
-      hx-swap="innerHTML">
+<form action="/profile/event/event_bulk" method="post">
 <table class="highlight bordered">
 
 
@@ -66,7 +64,7 @@
       </td>
         <td>
           <label>
-            <input type="checkbox" name="ids" value="{{ event.id }}" class="row-check" />
+            <input type="checkbox" name="selected_ids" value="{{ event.id }}" class="row-check" />
             <span></span>
           </label>
         </td>
@@ -90,18 +88,3 @@
 </form>
 
 
-<script>
-document.body.addEventListener('htmx:afterRequest', function(evt) {
-  // проверяем, что обновлялся именно блок #query-list
-  if (evt.detail.target && evt.detail.target.id === "query-list") {
-    // снимаем все чекбоксы в таблице событий
-    document.querySelectorAll('#event-list .row-check').forEach(cb => cb.checked = false);
-
-    // сбрасываем общий чекбокс "выбрать всё"
-    const selectAll = document.getElementById('select-all');
-    if (selectAll) {
-      selectAll.checked = false;
-    }
-  }
-});
-</script>

@@ -13,6 +13,9 @@ from dotenv import load_dotenv
 from Event_Pulse_app.utils.template_functions import templates
 from Event_Pulse_app.utils.QueryNormalizer import QueryNormalizer
 from typing import List
+from fastapi.responses import RedirectResponse
+
+
 
 router = APIRouter()
 router1 = APIRouter()
@@ -75,9 +78,9 @@ async def deactivate_event(event_id: int, request: Request, db: AsyncSession = D
 
 @router.post("/profile/event/event_bulk")
 async def event_bulk(
+    request: Request,
     selected_ids: List[int] = Form(...),
     action: str = Form(...),
-    request: Request,
     db: AsyncSession = Depends(get_db)
 ):
     user_id = request.state.user_id
@@ -101,13 +104,15 @@ async def event_bulk(
         await db.commit()
 
 
-        result = await db.execute(select(Event).where(Event.user_id == user_id))
-        updated_events = result.scalars().all()
+        # result = await db.execute(select(Event).where(Event.user_id == user_id))
+        # updated_events = result.scalars().all()
+        #
+        # return templates.TemplateResponse(
+        #     "partials/event_list.html",
+        #     {"request": request, "events": updated_events, "message": f"Hide: {success_count}/{fail_count}"}
+        # )
 
-        return templates.TemplateResponse(
-            "event_list.html",
-            {"request": request, "events": updated_events, "message": f"Hide: {success_count}/{fail_count}"}
-        )
+        return RedirectResponse(url="/profile", status_code=303)
 
 
     elif action == "deactivate_related_query":
@@ -137,14 +142,14 @@ async def event_bulk(
 
 
         await db.commit()
-        result = await db.execute(select(EventQuery).where(EventQuery.user_id == user_id))
-        new_queries = result.scalars().all()
+        # result = await db.execute(select(EventQuery).where(EventQuery.user_id == user_id))
+        # new_queries = result.scalars().all()
+        #
+        # return templates.TemplateResponse(
+        # "partials/query_list.html",
+        # {"request": request, "queries": new_queries, "message": f"Deactivate_related_quaries: {success_count}/{fail_count}"})
 
-        return templates.TemplateResponse(
-        "partials/query_list.html",
-        {"request": request, "queries": new_queries, "message": f"Deactivate_related_quaries: {success_count}/{fail_count}"})
-
-
+        return RedirectResponse(url="/profile", status_code=303)
 
 
 
