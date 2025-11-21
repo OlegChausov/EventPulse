@@ -29,6 +29,5 @@ async def get_afisha_me_films(
             film_links.append({"event_type": "film", "title": title, "url": href})
             seen_urls.add(href)
 
-
     return film_links
 

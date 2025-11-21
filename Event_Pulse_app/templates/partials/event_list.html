@@ -89,21 +89,8 @@
 </form>
 
 
-<script>
-(function() {
-  const form = document.getElementById('events-form');
-  const selectAll = form.querySelector('#select-all');
-  const getRowChecks = () => Array.from(form.querySelectorAll('.row-check'));
-  selectAll.addEventListener('change', () => {
-    getRowChecks().forEach(cb => cb.checked = selectAll.checked);
-  });
-  form.addEventListener('change', (e) => {
-    if (!e.target.classList.contains('row-check')) return;
-    const checks = getRowChecks();
-    selectAll.checked = checks.length && checks.every(c => c.checked);
-  });
-})();
-</script>
+  <script src="{{ url_for('static', path='js/checkbox_select_all_handler_for_event_list.js') }}"></script>
+
 
 
 

@@ -1,13 +1,23 @@
-<form
-  hx-post="/profile/query/add"
-  hx-target="#query-list"
-  hx-swap="innerHTML"
-  hx-on="htmx:afterRequest: document.getElementById('query-form').innerHTML = ''"
->
-  <input type="text" name="query_text" placeholder="Запрос" required>
-  <select name="query_type">
-    <option value="concert">Концерт</option>
-    <option value="film">Фильм</option>
-  </select>
-  <button type="submit">Добавить</button>
-</form>
+<div id="query-form">
+  <form
+    hx-post="/profile/query/add"
+    hx-target="#query-list"
+    hx-swap="innerHTML"
+    hx-on="htmx:afterRequest: this.reset(); this.style.display='none'"
+  >
+    <div class="input-field">
+      <input type="text" name="query_text" placeholder="Запрос" required>
+    </div>
+
+    <div class="input-field">
+      <select name="query_type" required>
+        <option value="" disabled selected>Выберите тип</option>
+        <option value="concert">Концерт</option>
+        <option value="film">Фильм</option>
+      </select>
+      <label>Тип события</label>
+    </div>
+
+    <button type="submit" class="btn waves-effect waves-light">Добавить</button>
+  </form>
+</div>
