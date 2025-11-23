@@ -16,7 +16,8 @@ from .profile_event_router import router as profile_event_router
 from .profile_event_router import router1 as profile_event_router_to_dectivate_query
 from .profile_event_router import router2 as profile_event_dectivate_router
 from .profile_event_router import router3 as profile_event_bulk_action_router
-
+from .oauth0 import router as oauth0_login_roter
+from .oauth0 import router1 as oauth0_callback_roter
 
 all_routers = [
 ping_router,
@@ -37,6 +38,8 @@ profile_event_router_to_dectivate_query,
 profile_event_dectivate_router,
 profile_event_bulk_action_router,
 query_bulk_action_router,
+oauth0_login_roter,
+oauth0_callback_roter
 
 
 
