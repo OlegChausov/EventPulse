@@ -1,15 +1,19 @@
-from fastapi import APIRouter
-from fastapi.responses import RedirectResponse
-import os
-from dotenv import load_dotenv
-from fastapi import APIRouter, Request
+
+from fastapi import APIRouter, Request, Depends
 from fastapi.responses import RedirectResponse
 import httpx, os
 from dotenv import load_dotenv
+from sqlalchemy.ext.asyncio import AsyncSession
+from Event_Pulse_app.database import get_db
+from Event_Pulse_app.models import User
+from Event_Pulse_app.utils.password import hash_password
+from sqlalchemy.future import select
+from Event_Pulse_app.utils.auth_jwt import create_access_token
 
 load_dotenv()
 
 router = APIRouter()
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 OAUTH0_DOMAIN = os.getenv("OAUTH0_DOMAIN")
 OAUTH0_CLIENT_ID = os.getenv("OAUTH0_CLIENT_ID")
@@ -30,7 +34,7 @@ async def login_social():
 router1 = APIRouter()
 
 @router1.get("/login/callback")
-async def callback(request: Request):
+async def callback(request: Request, db: AsyncSession = Depends(get_db)):
     code = request.query_params.get("code")
     if not code:
         return {"error": "Missing code"}
@@ -55,9 +59,64 @@ async def callback(request: Request):
 
     # Пока просто возвращаем профиль для проверки
     # return profile
-        #после получения данных с oauth0
+    #после получения данных с oauth0
 
-        email = profile.get("email")  # вернёт None, если ключа нет
+
+    email = profile.get("email")  # вернёт None, если ключа нет
+    if not email:
+        print("oauth0 не передал имэйл")
+        return RedirectResponse(url=f"/register", status_code=302)
+    result = await db.execute(select(User).where(User.email == email))
+    user = result.scalar_one_or_none()
+    if not user:
+        # если по имэйлу нет пользователя - создаем
         name = profile.get("name", email)  # если не вернулось имя, назовем клиента по имэйлу. Имэйл и имя будут совпадать
+        user = User(email=email, name=name)
+        try:
+            db.add(user)
+            await db.commit()
+            await db.refresh(user)
+            token = create_access_token({"sub": str(user.id)})
+            response = RedirectResponse(url="/profile", status_code=302)
+            response.set_cookie(
+                key="access_token",
+                value=token,
+                httponly=True,
+                max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+                samesite="lax",
+                secure=True
+            )
+            return response
+        except Exception as e:
+            print(f"Ошибка {e}, Регистрация через oauth0 не удалась, отправляем на повторную")
+            return RedirectResponse(url="/login/social")
+
+    try:
+        token = create_access_token({"sub": str(user.id)})
+        response = RedirectResponse(url="/profile", status_code=302)
+        response.set_cookie(
+            key="access_token",
+            value=token,
+            httponly=True,
+            max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+            samesite="lax",
+            secure=True
+        )
+        return response
+
+    except Exception as e:
+        print(f"Ошибка {e}, логин через oauth0 не удалася, отправляем на повторный")
+        return RedirectResponse(url="/login/social")
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -15,8 +15,12 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     email = Column(String, unique=True, nullable=False)
+    second_email = Column(String, unique=True, nullable=True)
     name = Column(String, nullable=False)
-    password_hash = Column(String, nullable=False)    # хэш пароля
+    password_hash = Column(String, nullable=True)    # хэш пароля
+    preffered_lang = Column(String, nullable=True)
+
+
 
     queries = relationship(
         "EventQuery",
