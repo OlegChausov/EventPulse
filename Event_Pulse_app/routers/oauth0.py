@@ -7,13 +7,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from Event_Pulse_app.database import get_db
 from Event_Pulse_app.models import User
 from Event_Pulse_app.utils.password import hash_password
-from sqlalchemy.future import select
+from sqlalchemy import select
 from Event_Pulse_app.utils.auth_jwt import create_access_token
 
 load_dotenv()
 
 router = APIRouter()
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60")) # 60 это если переменная не задана
 
 OAUTH0_DOMAIN = os.getenv("OAUTH0_DOMAIN")
 OAUTH0_CLIENT_ID = os.getenv("OAUTH0_CLIENT_ID")
@@ -48,6 +48,10 @@ async def callback(request: Request, db: AsyncSession = Depends(get_db)):
             "code": code,
             "redirect_uri": OAUTH0_REDIRECT_URI,
         })
+        if token_resp.status_code != 200:
+            print("Ошибка при обмене кода на токен:", token_resp.text)
+            return RedirectResponse(url="/login/social", status_code=302)
+
         tokens = token_resp.json()
 
         # 2. Получение профиля пользователя
