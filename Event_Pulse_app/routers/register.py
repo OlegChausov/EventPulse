@@ -27,6 +27,8 @@ async def register_user(request: Request, db: AsyncSession = Depends(get_db)):
     form = await request.form()
     name = form.get("name")
     email = form.get("email")
+    second_email = form.get("second_email")
+    preffered_lang = form.get("preffered_lang")
     password = form.get("password")
     confirm_password = form.get("confirm_password")
 
@@ -57,7 +59,9 @@ async def register_user(request: Request, db: AsyncSession = Depends(get_db)):
     user = User(
         email=email,
         name=name,
-        password_hash=hash_password(password)
+        password_hash=hash_password(password),
+        second_email=second_email or None,
+        preffered_lang = preffered_lang or None
     )
 
     try:
@@ -65,6 +69,7 @@ async def register_user(request: Request, db: AsyncSession = Depends(get_db)):
         await db.commit()
         await db.refresh(user)
     except Exception:
+        await db.rollback()
         return templates.TemplateResponse("register.html", {
             "request": request,
             "error": "Произошла ошибка, повторите попытку"

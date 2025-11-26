@@ -56,7 +56,8 @@ async def create_events(user: User, parsed_events: list[dict], db: AsyncSession)
         mail_body = "\n".join(
             " | ".join(filter(None, [event.title, event.location, event.url]))
             for event in list_of_new_events)
-        await send_email(user.email, "Event_Pulse нашел новые события для вас!", mail_body)
+        recipient = user.second_email if user.second_email else user.email
+        await send_email(recipient, "Event_Pulse нашел новые события для вас!", mail_body)
     return list_of_new_events
 
 
