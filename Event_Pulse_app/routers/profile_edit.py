@@ -27,17 +27,26 @@ async def profile_edit(request: Request, db: AsyncSession = Depends(get_db)):
 
 @router.post("/profile_edit")
 async def profile_edit(
-        request: Request,
-        db: AsyncSession = Depends(get_db),
-        username: str = Form(...),
-        email: str = Form(...),
-        new_password: str = Form(...),
-        new_password_confirmed: str = Form(...)):
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    username: str = Form(...),
+    email: str = Form(...),
+    second_email: str | None = Form(None),
+    preffered_lang: str | None = Form(None),
+    new_password: str | None = Form(None),
+    new_password_confirmed: str | None = Form(None)
+):
+    def clean(value: str | None) -> str | None:
+        return value.strip() if value else None
 
-    username = username.strip()
-    email = email.strip()
-    new_password = new_password.strip()
-    new_password_confirmed = new_password_confirmed.strip()
+    username = clean(username)
+    email = clean(email)
+    second_email = clean(second_email)
+    preffered_lang = clean(preffered_lang)
+    new_password = clean(new_password)
+    new_password_confirmed = clean(new_password_confirmed)
+
+
 
     user_id = request.state.user_id
     result = await db.execute(select(User).where(User.id == user_id))
@@ -80,15 +89,24 @@ async def profile_edit(
     # Обновление данных
     user.name = username
     user.email = email
+    user.second_email = second_email
+    user.preffered_lang = preffered_lang
     if new_password:
         user.password_hash = hash_password(new_password)
-    await db.commit()
-    await db.refresh(user)
+
+    try:
+        await db.commit()
+        await db.refresh(user)
+    except Exception:
+        await db.rollback()
+        return templates.TemplateResponse(
+            "profile_edit.html",
+            {"user": user, "request": request,
+             "message": "Ошибка при сохранении", "success": False}
+        )
 
     return templates.TemplateResponse(
         "profile_edit.html",
-        {   "user": user,
-            "request": request,
-            "message": "Данные успешно обновлены"
-        }
+        {"user": user, "request": request,
+         "message": "Данные успешно обновлены", "success": True}
     )

@@ -32,6 +32,18 @@ async def register_user(request: Request, db: AsyncSession = Depends(get_db)):
     password = form.get("password")
     confirm_password = form.get("confirm_password")
 
+    name = form.get("name").strip() if name else None
+    email = form.get("email").strip() if email else None
+    second_email = form.get("second_email").strip() if second_email else None
+    preffered_lang = form.get("preffered_lang").strip() if preffered_lang else None
+    password = form.get("password").strip() if password else None
+    confirm_password = form.get("confirm_password").strip() if confirm_password else None
+
+    if not password or not confirm_password:
+        return templates.TemplateResponse("register.html", {
+            "request": request,
+            "error": "Введите пароль и подтверждение"
+        })
 
     if len(password) > 20 or len(password) < 5:
         return templates.TemplateResponse("register.html", {
