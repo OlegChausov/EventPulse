@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Мой профиль — Event Pulse{% endblock %}
+{% block title %}{{ t.profile }} — Event Pulse{% endblock %}
 {% block content %}
     <div class="container">
-        <h1>Добро пожаловать, {{ user.name }}!</h1>
+        <h1>{{ t.welcome }}, {{ user.name }}!</h1>
 
         <div class="profile-info">
-            <p><strong>Имя пользователя:</strong> {{ user.name }}</p>
-            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>{{ t.username }}:</strong> {{ user.name }}</p>
+            <p><strong>{{ t.email }}:</strong> {{ user.email }}</p>
             {% if user.second_email %}
-            <p><strong>Email для получения событий:</strong> {{ user.second_email }}</p>
+            <p><strong>{{ t.second_email }}:</strong> {{ user.second_email }}</p>
             {% endif %}
         </div>
 
         <div class="actions">
-            <a href="/profile_edit" class="waves-effect waves-light btn blue">Изменить мои данные</a>
+            <a href="/profile_edit" class="waves-effect waves-light btn blue">{{ t.edit_profile }}</a>
         </div>
     </div>
 
     <div class="left" style="width:26%">
-      <h3>Мои запросы</h3>
+      <h3>{{ t.my_queries}}</h3>
 
       <div id="query-list" hx-get="/profile/query/list" hx-trigger="load" hx-swap="innerHTML"></div>
 
@@ -28,13 +28,13 @@
               hx-swap="innerHTML"
               class="waves-effect waves-light btn green">
             <i class="material-icons left">add</i>
-        Добавить запрос
+        {{ t.add_query}}
       </button>
       <div id="query-form"></div>
     </div>
 
     <div class="right" style="width:70%">
-      <h3>Мои события</h3>
+      <h3>{{ t.my_events}}</h3>
 
       <div id="event-list" hx-get="/profile/events/list" hx-trigger="load" hx-swap="innerHTML"></div>
     </div>

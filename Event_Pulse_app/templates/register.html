@@ -2,10 +2,10 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Регистрация</title>
+    <title>{{ t.registration_title }}</title>
 </head>
 <body>
-    <h1>Регистрация</h1>
+    <h1>{{ t.registration_header }}</h1>
 
     {% if error %}
         <div style="color: red; font-weight: bold;">
@@ -15,16 +15,16 @@
 
     <form method="post" action="/register">
 
-        <label>Имя пользователя:</label><br>
+        <label>{{ t.username }}:</label><br>
         <input type="text" name="name" required><br><br>
 
-        <label>Email:</label><br>
+        <label>{{ t.email }}:</label><br>
         <input type="email" name="email" required><br><br>
 
-        <label>Email для получения событий. Если отличается от основного:</label><br>
+        <label>{{ t.second_email }}:</label><br>
         <input type="email" name="second_email"><br><br>
 
-        <label>Язык</label>
+        <label>{{ t.language }}</label>
         <div class="input-field">
         <select name="preffered_lang">
         <option value=""></option>
@@ -35,13 +35,13 @@
 
 
 
-        <label>Пароль:</label><br>
+        <label>{{ t.password }}:</label><br>
         <input type="password" name="password" required><br><br>
 
-        <label>Подтверждение пароля:</label><br>
+        <label>{{ t.confirm_password }}:</label><br>
         <input type="password" name="confirm_password" required><br><br>
 
-        <button type="submit">Зарегистрироваться</button>
+        <button type="submit">{{ t.register_button }}</button>
     </form>
 </body>
 </html>

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Мой профиль — Event Pulse{% endblock %}
+{% block title %}{{ t.profile }}— Event Pulse{% endblock %}
 {% block content %}
 
     {% if error %}
@@ -12,28 +12,28 @@
       <div style="color: blue; font-weight: bold;"></div>
             {{ message }}
     {% endif %}
-<a href="/profile" class="btn btn-primary">К вашей странице</a>
+<a href="/profile" class="btn btn-primary">{{ t.to_profile }}</a>
 
 
 <form method="post" action="/profile_edit">
-  <label for="username">Имя пользователя:</label>
+  <label for="username">{{ t.username }}:</label>
   <input type="text" id="username" name="username" value="{{ user.name }}" required><br><br>
 
-  <label for="email">Email:</label>
+  <label for="email">{{ t.email }}:</label>
   <input type="email" id="email" name="email" value="{{ user.email }}" required><br><br>
 
-    <label for="email">Email для получения событий. Если отличается от основного:</label>
+    <label for="email">{{ t.second_email }}:</label>
   <input type="email" name="second_email" value="{{ user.second_email }}" required><br><br>
 
 
 
-  <label for="new_password">Новый пароль:</label>
+  <label for="new_password">{{ t.new_password }}:</label>
   <input type="password" id="new_password" name="new_password"><br><br>
 
-  <label for="new_password_confirmed">Подтверждение пароля:
+  <label for="new_password_confirmed">{{ t.confirm_password }}:
   <input type="password" id="new_password_confirmed" name="new_password_confirmed"></label><br><br>
 
-       <label>Язык</label>
+       <label>{{ t.language }}</label>
         <div class="input-field">
         <select name="preffered_lang">
         <option value="{{ user.preffered_lang }}"></option>
@@ -43,7 +43,7 @@
         </div>
 
 
-  <button type="submit">Сохранить</button>
+  <button type="submit">{{ t.save }}</button>
 </form>
 
 {% endblock %}
