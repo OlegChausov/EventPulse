@@ -1,5 +1,5 @@
 translations = {
-    "ru": {
+    "RU": {
         "vilnius": "Вильнюс",
         "warshaw": "Варшава",
         "minsk_movies": "Кино в минске",
@@ -39,7 +39,7 @@ translations = {
         "register_button": "Зарегистрироваться",
         "error_prefix": "Ошибка",
     },
-    "en": {
+    "EN": {
         "vilnius": "Vilnius",
         "warshaw": "Warshaw",
         "minsk_movies": "Movies in Minsk",

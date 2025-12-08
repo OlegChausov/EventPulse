@@ -6,18 +6,18 @@
     hx-on="htmx:afterRequest: this.reset(); this.style.display='none'"
   >
     <div class="input-field">
-      <input type="text" name="query_text" placeholder={{ t.query_placeholder }} required>
+      <input type="text" name="query_text" placeholder={{ request.state.t.query_placeholder }} required>
     </div>
 
     <div class="input-field">
       <select name="query_type" required>
-        <option value="" disabled selected>{{ t.choose_type }}</option>
-        <option value="concert">{{ t.concert }}</option>
-        <option value="film">{{ t.film }}</option>
+        <option value="" disabled selected>{{ request.state.t.choose_type }}</option>
+        <option value="concert">{{ request.state.t.concert }}</option>
+        <option value="film">{{ request.state.t.film }}</option>
       </select>
-      <label>{{ t.event_type }}</label>
+      <label>{{ request.state.t.event_type }}</label>
     </div>
 
-    <button type="submit" class="btn waves-effect waves-light">{{ t.add }}</button>
+    <button type="submit" class="btn waves-effect waves-light">{{ request.state.t.add }}</button>
   </form>
 </div>

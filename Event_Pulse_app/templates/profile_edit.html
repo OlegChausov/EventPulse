@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ t.profile }}— Event Pulse{% endblock %}
+{% block title %}{{ request.state.t.profile }}— Event Pulse{% endblock %}
 {% block content %}
 
     {% if error %}
@@ -12,38 +12,38 @@
       <div style="color: blue; font-weight: bold;"></div>
             {{ message }}
     {% endif %}
-<a href="/profile" class="btn btn-primary">{{ t.to_profile }}</a>
+<a href="/profile" class="btn btn-primary">{{ request.state.t.to_profile }}</a>
 
 
 <form method="post" action="/profile_edit">
-  <label for="username">{{ t.username }}:</label>
+  <label for="username">{{ request.state.t.username }}:</label>
   <input type="text" id="username" name="username" value="{{ user.name }}" required><br><br>
 
-  <label for="email">{{ t.email }}:</label>
+  <label for="email">{{ request.state.t.email }}:</label>
   <input type="email" id="email" name="email" value="{{ user.email }}" required><br><br>
 
-    <label for="email">{{ t.second_email }}:</label>
-  <input type="email" name="second_email" value="{{ user.second_email }}" required><br><br>
+    <label for="email">{{ request.state.t.second_email }}:</label>
+  <input type="email" name="second_email" value="{{ user.second_email if user.second_email is not none else '' }}"><br><br>
 
 
 
-  <label for="new_password">{{ t.new_password }}:</label>
+  <label for="new_password">{{ request.state.t.new_password }}:</label>
   <input type="password" id="new_password" name="new_password"><br><br>
 
-  <label for="new_password_confirmed">{{ t.confirm_password }}:
+  <label for="new_password_confirmed">{{ request.state.t.confirm_password }}:
   <input type="password" id="new_password_confirmed" name="new_password_confirmed"></label><br><br>
 
-       <label>{{ t.language }}</label>
-        <div class="input-field">
-        <select name="preffered_lang">
-        <option value="{{ user.preffered_lang }}"></option>
-        <option value="RU" selected>RU</option>
-        <option value="EN">EN</option>
-         </select>
-        </div>
+       <label>{{ request.state.t.language }}</label>
+ <div class="input-field">
+  <select name="preffered_lang">
+    <option value="RU" {% if user.preffered_lang == "RU" %}selected{% endif %}>RU</option>
+    <option value="EN" {% if user.preffered_lang == "EN" %}selected{% endif %}>EN</option>
+  </select>
+</div>
 
 
-  <button type="submit">{{ t.save }}</button>
+
+  <button type="submit">{{ request.state.t.save }}</button>
 </form>
 
 {% endblock %}

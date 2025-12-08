@@ -68,4 +68,5 @@ async def login(request: Request, db: AsyncSession = Depends(get_db)):
         samesite="lax",
         secure=True
     )
+    print(f'в роктере логин такой реквест стейт: {request.state.__dict__}')
     return response

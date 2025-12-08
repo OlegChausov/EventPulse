@@ -2,9 +2,9 @@
 
 {% if not success %} {{ message }} {% endif %}
 <form method="post" action="/login">
-  <input type="text" name="name_or_email" placeholder={{ t.login_or_email }}>
-  <input type="password" name="password" placeholder={{ t.password }}>
-  <button type="submit">{{ t.login }}</button>
+  <input type="text" name="name_or_email" placeholder={{ request.state.t.login_or_email }}>
+  <input type="password" name="password" placeholder={{ request.state.t.password }}>
+  <button type="submit">{{ request.state.t.login }}</button>
 </form>
 
 <a href="/login/social" class="google-btn">

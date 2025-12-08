@@ -33,7 +33,7 @@
     {% if event.is_active %}
     <tr>
       <td>{{ event.title }}</td>
-      <td>{{ t.minsk_movies if event.location is none else t.vilnius if event.location|lower == "vilnius" else t.warshaw if event.location|lower == "warshaw" else event.location }}</td>
+      <td>{{ request.state.t.minsk_movies if event.location is none else t.vilnius if event.location|lower == "vilnius" else t.warshaw if event.location|lower == "warshaw" else event.location }}</td>
 
 
      <td>
@@ -42,7 +42,7 @@
      target="_blank"
      rel="noopener noreferrer">
       <i class="material-icons left">cloud</i>
-    {{ t.buy_ticket }}
+    {{ request.state.t.buy_ticket }}
   </a>
 </td>
 
@@ -51,7 +51,7 @@
         hx-target="#query-list"
         hx-swap="innerHTML"
         class="waves-effect waves-light btn-small green darken-3">
-  {{ t.stop_searching }}
+  {{ request.state.t.stop_searching }}
 </button>
       </td>
 
@@ -60,7 +60,7 @@
         hx-target="#event-list"
         hx-swap="innerHTML"
         class="waves-effect waves-light btn-small grey">
-  {{ t.hide_and_continue }}
+  {{ request.state.t.hide_and_continue }}
 </button>
       </td>
         <td>
@@ -79,12 +79,12 @@
     </table>
       <button type="submit" name="action" value="hide"
           class="waves-effect waves-light btn grey">
-    {{ t.hide_selected_and_continue }}
+    {{ request.state.t.hide_selected_and_continue }}
   </button>
 
   <button type="submit" name="action" value="deactivate_related_query"
           class="waves-effect waves-light btn green darken-3">
-    {{ t.dont_search_selected }}
+    {{ request.state.t.dont_search_selected }}
   </button>
 </form>
 

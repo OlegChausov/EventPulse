@@ -11,6 +11,8 @@ from Event_Pulse_app.config import STATIC_DIR
 from Event_Pulse_app.routers import all_routers
 from Event_Pulse_app.middleware.auth_middleware import JWTMiddleware
 from Event_Pulse_app.middleware.token_expiration_moddleware import SlidingExpirationMiddleware
+from Event_Pulse_app.middleware.set_lang_middleware import SetLangMiddleware
+
 from fastapi.staticfiles import StaticFiles
 from Event_Pulse_app.config import STATIC_DIR
 
@@ -23,6 +25,8 @@ if sys.platform.startswith("win"):
 app = FastAPI()
 app.add_middleware(JWTMiddleware)
 app.add_middleware(SlidingExpirationMiddleware)
+app.add_middleware(SetLangMiddleware)
+
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
