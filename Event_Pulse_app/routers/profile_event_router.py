@@ -14,7 +14,7 @@ from Event_Pulse_app.utils.template_functions import templates
 from Event_Pulse_app.utils.QueryNormalizer import QueryNormalizer
 from typing import List, Optional
 from fastapi.responses import RedirectResponse
-
+from Event_Pulse_app.utils.translations import translations
 
 
 router = APIRouter()
@@ -31,6 +31,14 @@ async def events_list(request: Request, db: AsyncSession = Depends(get_db)):
 
     result = await db.execute(select(Event).where(Event.user_id == user_id))
     events = result.scalars().all()
+
+    result_user = await db.execute(select(User).where(User.id == user_id))
+    user = result_user.scalar_one_or_none()
+    lang_from_db = user.preffered_lang
+    if request.state.lang != lang_from_db:
+        request.state.lang = lang_from_db
+        request.state.t = translations.get(lang_from_db, translations["RU"])
+
     return templates.TemplateResponse("partials/event_list.html", {"request": request, "events": events, "success" : True})
 
 
@@ -50,6 +58,13 @@ async def deactivate_query(event_id: int, request: Request, db: AsyncSession = D
 
     result = await db.execute(select(EventQuery).where(EventQuery.user_id == user_id))
     queries = result.scalars().all()
+
+    result_user = await db.execute(select(User).where(User.id == user_id))
+    user = result_user.scalar_one_or_none()
+    lang_from_db = user.preffered_lang
+    if request.state.lang != lang_from_db:
+        request.state.lang = lang_from_db
+        request.state.t = translations.get(lang_from_db, translations["RU"])
 
     return templates.TemplateResponse(
         "partials/query_list.html",
@@ -71,6 +86,14 @@ async def deactivate_event(event_id: int, request: Request, db: AsyncSession = D
 
     result_stmt = await db.execute(select(Event).where(Event.user_id == user_id))
     events = result_stmt.scalars().all()
+
+    result_user = await db.execute(select(User).where(User.id == user_id))
+    user = result_user.scalar_one_or_none()
+    lang_from_db = user.preffered_lang
+    if request.state.lang != lang_from_db:
+        request.state.lang = lang_from_db
+        request.state.t = translations.get(lang_from_db, translations["RU"])
+
     return templates.TemplateResponse("partials/event_list.html",
                                       {"request": request, "events": events, "success": True})
 

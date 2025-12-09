@@ -16,6 +16,8 @@ from dotenv import load_dotenv
 from Event_Pulse_app.utils.template_functions import templates
 from Event_Pulse_app.utils.QueryNormalizer import QueryNormalizer
 from typing import List, Optional
+from Event_Pulse_app.utils.translations import translations
+
 
 router = APIRouter()
 router1 = APIRouter()
@@ -33,6 +35,14 @@ async def query_list(request: Request, db: AsyncSession = Depends(get_db)):
 
     result = await db.execute(select(EventQuery).where(EventQuery.user_id == user_id))
     queries = result.scalars().all()
+
+    result_user = await db.execute(select(User).where(User.id == user_id))
+    user = result_user.scalar_one_or_none()
+    lang_from_db = user.preffered_lang
+    if request.state.lang != lang_from_db:
+        request.state.lang = lang_from_db
+        request.state.t = translations.get(lang_from_db, translations["RU"])
+
     return templates.TemplateResponse("partials/query_list.html", {"request": request, "queries": queries, "success" : True})
 
 

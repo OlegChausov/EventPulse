@@ -17,8 +17,8 @@ router = APIRouter()
 @router.get("/profile_edit")
 async def profile_edit(request: Request, db: AsyncSession = Depends(get_db)):
     user_id = request.state.user_id
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalar_one_or_none()
+    result_user = await db.execute(select(User).where(User.id == user_id))
+    user = result_user.scalar_one_or_none()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 

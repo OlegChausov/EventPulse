@@ -3,7 +3,7 @@
 {% block title %}{{ request.state.t.profile }} — Event Pulse{% endblock %}
 {% block content %}
     <div class="container">
-        <h1>{{ request.state.t.welcome }}, {{ request.state.t.name }}!</h1>
+        <h1>{{ request.state.t.welcome }}, {{ user.name }}!</h1>
 
         <div class="profile-info">
             <p><strong>{{ request.state.t.username }}:</strong> {{ user.name }}</p>
@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <div class="left" style="width:26%">
+    <div class="left" style="width:30%">
       <h3>{{ request.state.t.my_queries}}</h3>
 
       <div id="query-list" hx-get="/profile/query/list" hx-trigger="load" hx-swap="innerHTML"></div>

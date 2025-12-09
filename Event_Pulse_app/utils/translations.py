@@ -54,7 +54,7 @@ translations = {
         "film": "Film",
         "event_type": "Event type",
         "add": "Add",
-        "dont_search": "Do not search",
+        "dont_search": "Dont Search",
         "dont_search_selected": "Do not search selected",
         "profile": "Profile",
         "logout": "Logout",
