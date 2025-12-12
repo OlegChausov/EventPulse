@@ -33,7 +33,7 @@
     {% if event.is_active %}
     <tr>
       <td>{{ event.title }}</td>
-      <td>{{ request.state.t.minsk_movies if event.location is none else request.state.t.vilnius if event.location|lower == "vilnius" else t.warshaw if event.location|lower == "warshaw" else event.location }}</td>
+      <td>{{ request.state.t.minsk_movies if event.location is none else request.state.t.vilnius if event.location|lower == "vilnius" else request.state.t.warshaw if event.location|lower == "warshaw" else event.location }}</td>
 
 
      <td>
