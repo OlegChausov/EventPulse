@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
 <html>
 <head>
     <meta charset="utf-8">
@@ -24,14 +25,13 @@
         <label>{{ request.state.t.second_email }}:</label><br>
         <input type="email" name="second_email"><br><br>
 
-        <label>{{ request.state.t.language }}</label>
-        <div class="input-field">
-        <select name="preffered_lang">
-        <option value=""></option>
-        <option value="RU" selected>RU</option>
-        <option value="EN">EN</option>
-         </select>
-        </div>
+       <label>{{ request.state.t.language }}</label>
+ <div class="input-field">
+  <select name="preffered_lang">
+    <option value="RU">RU</option>
+    <option value="EN">EN</option>
+  </select>
+</div>
 
 
 
@@ -45,3 +45,4 @@
     </form>
 </body>
 </html>
+{% endblock %}
