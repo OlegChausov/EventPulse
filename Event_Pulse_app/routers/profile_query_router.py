@@ -1,6 +1,6 @@
-import os
+from Event_Pulse_app.utils.set_translation_to_request_state import set_translation_to_request_state
 from fastapi.responses import Response
-from fastapi import APIRouter, Request, Form, Depends
+from fastapi import APIRouter, Request, Form, Depends, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -38,16 +38,21 @@ async def query_list(request: Request, db: AsyncSession = Depends(get_db)):
 
     result_user = await db.execute(select(User).where(User.id == user_id))
     user = result_user.scalar_one_or_none()
-    lang_from_db = user.preffered_lang
-    if request.state.lang != lang_from_db:
-        request.state.lang = lang_from_db
-        request.state.t = translations.get(lang_from_db, translations["RU"])
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    set_translation_to_request_state(user, request)
 
     return templates.TemplateResponse("partials/query_list.html", {"request": request, "queries": queries, "success" : True})
 
 
 @router1.get("/profile/query/form")
-async def query_form(request: Request):
+async def query_form(request: Request, db: AsyncSession = Depends(get_db)):
+    user_id = request.state.user_id
+    result_user = await db.execute(select(User).where(User.id == user_id))
+    user = result_user.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    set_translation_to_request_state(user, request)
     return templates.TemplateResponse("partials/query_form.html", {"request": request})
 
 @router2.post("/profile/query/add")
@@ -75,6 +80,12 @@ async def add_query(
     )
     db.add(query)
     await db.commit()
+
+    result_user = await db.execute(select(User).where(User.id == user_id))
+    user = result_user.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    set_translation_to_request_state(user, request)
 
     result = await db.execute(select(EventQuery).where(EventQuery.user_id == user_id))
     queries = result.scalars().all()

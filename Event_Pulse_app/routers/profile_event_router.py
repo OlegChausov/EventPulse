@@ -1,4 +1,4 @@
-import os
+from Event_Pulse_app.utils.set_translation_to_request_state import set_translation_to_request_state
 from fastapi.responses import Response
 from fastapi import APIRouter, Request, Form, Depends, Request
 from fastapi.responses import RedirectResponse
@@ -34,10 +34,7 @@ async def events_list(request: Request, db: AsyncSession = Depends(get_db)):
 
     result_user = await db.execute(select(User).where(User.id == user_id))
     user = result_user.scalar_one_or_none()
-    lang_from_db = user.preffered_lang
-    if request.state.lang != lang_from_db:
-        request.state.lang = lang_from_db
-        request.state.t = translations.get(lang_from_db, translations["RU"])
+    set_translation_to_request_state(user, request)
 
     return templates.TemplateResponse("partials/event_list.html", {"request": request, "events": events, "success" : True})
 
@@ -61,10 +58,7 @@ async def deactivate_query(event_id: int, request: Request, db: AsyncSession = D
 
     result_user = await db.execute(select(User).where(User.id == user_id))
     user = result_user.scalar_one_or_none()
-    lang_from_db = user.preffered_lang
-    if request.state.lang != lang_from_db:
-        request.state.lang = lang_from_db
-        request.state.t = translations.get(lang_from_db, translations["RU"])
+    set_translation_to_request_state(user, request)
 
     return templates.TemplateResponse(
         "partials/query_list.html",
@@ -89,10 +83,7 @@ async def deactivate_event(event_id: int, request: Request, db: AsyncSession = D
 
     result_user = await db.execute(select(User).where(User.id == user_id))
     user = result_user.scalar_one_or_none()
-    lang_from_db = user.preffered_lang
-    if request.state.lang != lang_from_db:
-        request.state.lang = lang_from_db
-        request.state.t = translations.get(lang_from_db, translations["RU"])
+    set_translation_to_request_state(user, request)
 
     return templates.TemplateResponse("partials/event_list.html",
                                       {"request": request, "events": events, "success": True})

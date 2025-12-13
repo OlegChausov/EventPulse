@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, Form, Depends, HTTPException
-from fastapi.responses import RedirectResponse
+from Event_Pulse_app.utils.set_translation_to_request_state import set_translation_to_request_state
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 from Event_Pulse_app.database import get_db
@@ -37,11 +37,9 @@ async def profile(request: Request, db: AsyncSession = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    lang_from_db = user.preffered_lang
-    if request.state.lang != lang_from_db:
-        request.state.lang = lang_from_db
-        request.state.t = translations.get(lang_from_db, translations["RU"])
-    print(f'в роктере профиль такой реквест стейт: {request.state.__dict__}')
+
+    set_translation_to_request_state(user, request)
+
     return templates.TemplateResponse("profile.html", {
         "request": request,
         "user": user,
