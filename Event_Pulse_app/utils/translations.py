@@ -38,6 +38,7 @@ translations = {
         "registration_header": "Регистрация",
         "register_button": "Зарегистрироваться",
         "error_prefix": "Ошибка",
+        "OK": "OK",
     },
     "EN": {
         "vilnius": "Vilnius",
@@ -78,5 +79,6 @@ translations = {
         "registration_header": "Registration",
         "register_button": "Register",
         "error_prefix": "Error",
+        "OK": "OK",
     }
 }

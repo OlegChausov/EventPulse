@@ -2,6 +2,11 @@
  <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+  <head>
+    <meta charset="utf-8">
+    <title>{{ request.state.t.login }}</title>
+</head>
+
 {% if not success %} {{ message }} {% endif %}
 
 <div style="max-width: 400px; margin-top: 20px; margin-left: 20px;">

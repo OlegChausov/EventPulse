@@ -112,6 +112,5 @@ async def profile_edit(
 
     return templates.TemplateResponse(
         "profile_edit.html",
-        {"user": user, "request": request,
-         "message": "Данные успешно обновлены", "success": True}
+        {"user": user, "request": request, "success": True}
     )
