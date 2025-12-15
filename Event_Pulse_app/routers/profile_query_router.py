@@ -1,22 +1,20 @@
 from Event_Pulse_app.utils.set_translation_to_request_state import set_translation_to_request_state
 from fastapi.responses import Response
 from fastapi import APIRouter, Request, Form, Depends, HTTPException
-from fastapi.responses import RedirectResponse
-from fastapi.templating import Jinja2Templates
+
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import QueryEvents
+
 from fastapi.responses import RedirectResponse
 from Event_Pulse_app.database import get_db
 from Event_Pulse_app.models import User, EventQuery
-from Event_Pulse_app.utils.password import hash_password
+
 from sqlalchemy.future import select
 from sqlalchemy import delete
-from Event_Pulse_app.utils.auth_jwt import create_access_token
-from dotenv import load_dotenv
+
 from Event_Pulse_app.utils.template_functions import templates
 from Event_Pulse_app.utils.QueryNormalizer import QueryNormalizer
 from typing import List, Optional
-from Event_Pulse_app.utils.translations import translations
+
 
 
 router = APIRouter()

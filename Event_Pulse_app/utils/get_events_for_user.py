@@ -8,9 +8,9 @@ from Event_Pulse_app.utils.fuzzy_match import fuzzy_match
 from Event_Pulse_app.utils.password import hash_password
 from sqlalchemy.future import select
 from Event_Pulse_app.utils.QueryNormalizer import QueryNormalizer
-from Event_Pulse_app.utils.template_functions import templates
+
 from Event_Pulse_app.utils.send_an_email import send_email
-from fastapi import FastAPI, BackgroundTasks
+
 
 
 async def create_events(user: User, parsed_events: list[dict], db: AsyncSession):

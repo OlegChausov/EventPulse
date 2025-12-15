@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 from sqlalchemy.ext.asyncio import AsyncSession
 from Event_Pulse_app.database import get_db
 from Event_Pulse_app.models import User
-from Event_Pulse_app.utils.password import hash_password
 from sqlalchemy import select
 from Event_Pulse_app.utils.auth_jwt import create_access_token
 

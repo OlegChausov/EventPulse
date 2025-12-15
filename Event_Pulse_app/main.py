@@ -2,12 +2,7 @@ from fastapi import FastAPI
 app = FastAPI()
 import asyncio
 import sys
-from sqlalchemy import TryCast
-from sqlalchemy.ext.asyncio import AsyncSession
-from Event_Pulse_app.utils.get_events_for_user import create_events
-from Event_Pulse_app.utils.parse_all import run_all_parsers
-from sqlalchemy.future import select
-from Event_Pulse_app.config import STATIC_DIR
+
 from Event_Pulse_app.routers import all_routers
 from Event_Pulse_app.middleware.auth_middleware import JWTMiddleware
 from Event_Pulse_app.middleware.token_expiration_moddleware import SlidingExpirationMiddleware

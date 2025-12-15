@@ -1,11 +1,6 @@
-from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
-from Event_Pulse_app.models import User
 from Event_Pulse_app.utils.translations import translations
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from Event_Pulse_app.models import User
-from Event_Pulse_app.database import get_db
+
 from fastapi import APIRouter, Request, Form, Depends, HTTPException
 
 #определяем язык в куке и если не выбран, кладем туда язык браузера

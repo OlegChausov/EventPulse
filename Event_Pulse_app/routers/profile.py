@@ -1,14 +1,13 @@
-from fastapi import APIRouter, Request, Form, Depends, HTTPException
+from fastapi import APIRouter, Request, Depends, HTTPException
 from Event_Pulse_app.utils.set_translation_to_request_state import set_translation_to_request_state
-from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 from Event_Pulse_app.database import get_db
 from Event_Pulse_app.models import User
-from Event_Pulse_app.utils.password import hash_password
+
 from sqlalchemy.future import select
-from Event_Pulse_app.utils.auth_jwt import create_access_token
+
 from Event_Pulse_app.utils.template_functions import templates
-from Event_Pulse_app.utils.translations import translations
+
 
 
 router = APIRouter()

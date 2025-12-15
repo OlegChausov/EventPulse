@@ -1,10 +1,8 @@
-from fastapi import Depends
-from datetime import datetime, timedelta, date
+
+from datetime import date
 import requests
 from bs4 import BeautifulSoup
-import re
-import asyncio
-from Event_Pulse_app.utils.time_functions import default_start_date, default_end_date
+
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 

@@ -5,9 +5,9 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from Event_Pulse_app.database import get_db
 from Event_Pulse_app.models import User
-from Event_Pulse_app.utils.password import hash_password, verify_password
+from Event_Pulse_app.utils.password import verify_password
 from sqlalchemy.future import select
-from Event_Pulse_app.utils.auth_jwt import create_access_token, decode_access_token
+from Event_Pulse_app.utils.auth_jwt import create_access_token
 from dotenv import load_dotenv
 from Event_Pulse_app.utils.template_functions import templates
 

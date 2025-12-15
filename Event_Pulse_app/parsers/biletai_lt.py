@@ -1,9 +1,9 @@
-from fastapi import Depends
-from datetime import datetime, timedelta, date
+
+from datetime import date
 import requests
 from bs4 import BeautifulSoup
 import re
-import asyncio
+
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
